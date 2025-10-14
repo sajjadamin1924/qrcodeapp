@@ -1,6 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "jsx": "react",
     "strict": true,
     "paths": {
       "@/*": [
@@ -13,5 +14,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "App.jsx", "app/navigation/AppNavigator.jsx", "app/index.jsx", "app/welcomescreen.jsx", "components/HomeScreen.jsx", "app/generate/languageScreen.jsx", "app/generate/permissionScreen.jsx", "app/generate/Generate.jsx", "app/generate/business.jsx", "app/generate/contact.jsx", "app/generate/email.jsx", "app/generate/event.jsx", "app/generate/history.jsx", "app/generate/instagram.jsx", "app/generate/scanner.jsx", "app/generate/settings.jsx", "app/generate/telephone.jsx", "app/generate/text.jsx", "app/generate/twitter.jsx", "app/generate/website.jsx", "app/generate/whatsapp.jsx", "app/generate/wifi.jsx", "app/navigation/DrawerNavigator.jsx", "app/openFile.jsx", "app/showqr.jsx"  ]
 }
