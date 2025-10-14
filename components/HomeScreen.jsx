@@ -2,9 +2,11 @@ import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { useNavigation } from "@react-navigation/native";
 import { Camera, CameraView } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  Alert,
   Animated,
   Easing,
   StyleSheet,
@@ -12,9 +14,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import BottomNavigation from "../components/BottomNavigation";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import BottomNavigation from "../components/BottomNavigation";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -23,7 +24,6 @@ export default function HomeScreen() {
   const [type, setType] = useState("back");
   const [zoom, setZoom] = useState(0);
   const [flash, setFlash] = useState("off");
-
   const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -50,6 +50,30 @@ export default function HomeScreen() {
     ).start();
   }, []);
 
+  // pick image (no barcode scan from image possible with expo-camera)
+  const pickImageFromGallery = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(t("permissionDenied"));
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        quality: 1,
+      });
+
+      if (!result.canceled && result.assets?.length > 0) {
+        Alert.alert(t("noQRCodeFound") || "QR scanning from images isn’t supported in Expo Go yet.");
+      }
+    } catch (error) {
+      console.error("Error picking image:", error);
+      Alert.alert("Failed to pick image. Please try again.");
+    }
+  };
+
   const translateY = animation.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 220],
@@ -64,7 +88,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Full-screen camera */}
+      {/* Camera Preview */}
       <CameraView
         style={styles.camera}
         facing={type}
@@ -78,12 +102,16 @@ export default function HomeScreen() {
         }}
       />
 
-      {/* Overlay content */}
+      {/* Overlay UI */}
       <SafeAreaView style={styles.overlayContainer}>
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.navigate("openFile")}>
             <Ionicons name="images-outline" size={28} color="white" />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={pickImageFromGallery}>
+            <Ionicons name="image" size={28} color="#FFD700" />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -103,7 +131,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Scanning box */}
+        {/* Scan box */}
         <View style={styles.overlay}>
           <View style={styles.scanBox}>
             <Animated.View
@@ -136,17 +164,9 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#000",
-  },
-  camera: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  overlayContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: "space-between",
-  },
+  container: { flex: 1, backgroundColor: "#000" },
+  camera: { ...StyleSheet.absoluteFillObject },
+  overlayContainer: { ...StyleSheet.absoluteFillObject, justifyContent: "space-between" },
   header: {
     marginTop: 10,
     marginHorizontal: 20,
@@ -158,11 +178,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     zIndex: 10,
   },
-  overlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  overlay: { flex: 1, justifyContent: "center", alignItems: "center" },
   scanBox: {
     width: 250,
     height: 250,
@@ -172,24 +188,13 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.2)",
     overflow: "hidden",
   },
-  scanLine: {
-    width: "100%",
-    height: 3,
-    backgroundColor: "#FFD700",
-    opacity: 0.9,
-  },
+  scanLine: { width: "100%", height: 3, backgroundColor: "#FFD700", opacity: 0.9 },
   sliderContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 80,
   },
-  slider: {
-    flex: 1,
-    marginHorizontal: 10,
-  },
-  sliderText: {
-    color: "white",
-    fontSize: 28,
-  },
+  slider: { flex: 1, marginHorizontal: 10 },
+  sliderText: { color: "white", fontSize: 28 },
 });
