@@ -1,10 +1,10 @@
+import BottomNavigation from "@/components/BottomNavigation";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera, CameraView } from "expo-camera";
-import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   Animated,
@@ -22,6 +22,8 @@ const ScannerScreen = () => {
   const [cameraType, setCameraType] = useState("back");
   const [flash, setFlash] = useState("off");
   const navigation = useNavigation();
+  const { t } = useTranslation();
+
   const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -77,38 +79,6 @@ const ScannerScreen = () => {
     navigation.navigate("openFile", { scannedData: data });
   };
 
-  // 🖼️ Pick image from gallery and try to detect QR
-  const pickImageFromGallery = async () => {
-    try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permission Required", "Gallery access is needed to scan from images.");
-        return;
-      }
-
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1,
-      });
-
-      if (!result.canceled) {
-        const asset = result.assets[0];
-        const barcode = await BarCodeScanner.scanFromURLAsync(asset.uri);
-
-        if (barcode.length > 0) {
-          const data = barcode[0].data;
-          saveScanToHistory(data);
-          navigation.navigate("openFile", { scannedData: data });
-        } else {
-          Alert.alert("No QR Found", "No QR code detected in the selected image.");
-        }
-      }
-    } catch (error) {
-      console.error("Gallery Scan Error:", error);
-      Alert.alert("Error", "Failed to scan image from gallery.");
-    }
-  };
-
   if (hasPermission === null) {
     return <Text style={styles.infoText}>Requesting camera permission...</Text>;
   }
@@ -123,21 +93,24 @@ const ScannerScreen = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      {/* 🎥 Camera Layer */}
       <CameraView
-        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={{ flex: 1 }}
+        style={StyleSheet.absoluteFill}
         facing={cameraType}
         enableTorch={flash === "on"}
+        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
       />
 
-      {/* ⚡ Green scan box */}
+      {/* 🔲 Overlay */}
       <View style={styles.overlay}>
         <View style={styles.scanBox}>
-          <Animated.View style={[styles.scanLine, { transform: [{ translateY }] }]} />
+          <Animated.View
+            style={[styles.scanLine, { transform: [{ translateY }] }]}
+          />
         </View>
       </View>
 
-      {/* 🔘 Controls (Flash, Camera switch, Gallery) */}
+      {/* ⚙️ Top Controls */}
       <View style={styles.topControls}>
         <TouchableOpacity
           onPress={() => setFlash(flash === "off" ? "on" : "off")}
@@ -145,30 +118,33 @@ const ScannerScreen = () => {
         >
           <Ionicons
             name={flash === "on" ? "flash" : "flash-off"}
-            size={26}
+            size={28}
             color="white"
           />
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setCameraType(cameraType === "back" ? "front" : "back")}
+          onPress={() =>
+            setCameraType(cameraType === "back" ? "front" : "back")
+          }
           style={styles.iconButton}
         >
-          <Ionicons name="camera-reverse-outline" size={26} color="white" />
-        </TouchableOpacity>
-
-        {/* 🖼️ Gallery icon */}
-        <TouchableOpacity onPress={pickImageFromGallery} style={styles.iconButton}>
-          <Ionicons name="images-outline" size={26} color="white" />
+          <Ionicons name="camera-reverse" size={28} color="white" />
         </TouchableOpacity>
       </View>
 
-      {/* 🔘 Scan Again */}
+      {/* 🔘 Scan Again Button */}
       {scanned && (
-        <TouchableOpacity style={styles.button} onPress={() => setScanned(false)}>
-          <Text style={styles.buttonText}>Scan Again</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => setScanned(false)}
+        >
+          <Text style={styles.buttonText}>{t("scanAgain")}</Text>
         </TouchableOpacity>
       )}
+
+      {/* 🔽 Bottom Navigation */}
+      <BottomNavigation />
     </View>
   );
 };
@@ -215,12 +191,13 @@ const styles = StyleSheet.create({
   },
   button: {
     position: "absolute",
-    bottom: 50,
+    bottom: 110,
     alignSelf: "center",
     backgroundColor: "#FDB623",
     paddingHorizontal: 24,
     paddingVertical: 10,
     borderRadius: 6,
+    zIndex: 20,
   },
   buttonText: {
     fontSize: 16,

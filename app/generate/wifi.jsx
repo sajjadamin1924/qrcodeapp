@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Image,
   ImageBackground,
   StyleSheet,
@@ -14,13 +16,14 @@ import QRCode from 'react-native-qrcode-svg';
 import uuid from 'react-native-uuid';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-export default function QRCodeWifi() {
+const QRCodeWifi = () => {
+  const { t } = useTranslation();
   const [ssid, setSsid] = useState('');
   const [password, setPassword] = useState('');
   const [qrValue, setQrValue] = useState(null);
-  const navigator = useNavigation(); // Type if needed
+  const navigation = useNavigation();
 
-  const saveCreateToHistory = async (data) => {
+  const saveToHistory = async (data) => {
     try {
       const saved = await AsyncStorage.getItem('qrHistory');
       const history = saved ? JSON.parse(saved) : [];
@@ -29,7 +32,7 @@ export default function QRCodeWifi() {
         id: uuid.v4().toString(),
         url: data,
         date: new Date().toLocaleString(),
-        type: 'create',
+        type: 'wifi',
       };
 
       const newHistory = [newItem, ...history];
@@ -41,88 +44,86 @@ export default function QRCodeWifi() {
 
   const handleGenerateQRCode = () => {
     if (!ssid.trim()) {
-      alert('Please enter a valid network name');
+      Alert.alert(t('error'), t('pleaseEnterValidSSID'));
       return;
     }
+
     const value = `WIFI:T:WPA;S:${ssid.trim()};P:${password.trim()};;`;
-    setQrValue(value); // display QR
-    saveCreateToHistory(value); // save to history
-    navigator.navigate('openFile', { scannedData: value });
+    setQrValue(value);
+    saveToHistory(value);
+    navigation.navigate('openFile', { scannedData: value });
   };
 
   return (
     <ImageBackground
-      source={require("../../assets/images/background.png")}
+      source={require('../../assets/images/background.png')}
       style={styles.background}
       resizeMode="cover"
     >
       <View style={styles.overlay}>
-
         {/* Header */}
         <View style={styles.headerRow}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigator.goBack()}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Icon name="chevron-left" size={34} color="#F7A000" />
           </TouchableOpacity>
-          <Text style={styles.title}>Wi-Fi</Text>
+          <Text style={styles.title}>{t('wifi')}</Text>
         </View>
 
         {/* Card */}
         <View style={styles.card}>
           <View style={styles.iconBox}>
-            <Image source={require('../../assets/images/wifi.png')} style={{ width: 50, height: 50 }} />
+            <Image
+              source={require('../../assets/images/wifi.png')}
+              style={{ width: 50, height: 50 }}
+            />
           </View>
 
-          <Text style={styles.label}>Network Name (SSID)</Text>
+          <Text style={styles.label}>{t('networkName')}</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter network name"
+            placeholder={t('enterNetworkName')}
             placeholderTextColor="#999"
             value={ssid}
             onChangeText={setSsid}
           />
 
-          <Text style={styles.label}>Password</Text>
+          <Text style={styles.label}>{t('password')}</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter password"
+            placeholder={t('enterPassword')}
             placeholderTextColor="#999"
+            secureTextEntry
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
           />
 
           <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-            <Text style={styles.buttonText}>Generate QR Code</Text>
+            <Text style={styles.buttonText}>{t('generateQRCode')}</Text>
           </TouchableOpacity>
-        </View>
 
-        {/* QR Code Preview */}
-        {qrValue && (
-          <View style={styles.qrWrapper}>
-            <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-            <Text style={styles.qrText}>Scan to connect to Wi-Fi</Text>
-          </View>
-        )}
+          {qrValue && (
+            <View style={styles.qrWrapper}>
+              <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
+              <Text style={styles.qrText}>{t('scanToConnectWifi')}</Text>
+            </View>
+          )}
+        </View>
       </View>
     </ImageBackground>
   );
 };
 
-
+export default QRCodeWifi;
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
+  background: { flex: 1, width: '100%', height: '100%' },
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(30,30,30,0.6)", // dark overlay for readability
+    backgroundColor: 'rgba(30,30,30,0.6)',
     paddingTop: 50,
     paddingHorizontal: 20,
   },
-  headerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 40 },
+  headerRow: { flexDirection: 'row', alignItems: 'center', marginTop: 40, marginBottom: 40 },
   backButton: {
     width: 40,
     height: 40,
@@ -155,14 +156,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    width: '60%',
+    width: '50%',
     alignSelf: 'center',
     backgroundColor: '#F7A000',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
+    marginBottom: 10,
   },
   buttonText: { color: '#1E1E1E', fontWeight: 'bold', fontSize: 16 },
-  qrWrapper: { marginTop: 40, alignItems: 'center', justifyContent: 'center' },
+  qrWrapper: { marginTop: 20, alignItems: 'center', justifyContent: 'center' },
   qrText: { marginTop: 12, color: '#fff', fontSize: 16 },
 });

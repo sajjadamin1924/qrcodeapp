@@ -1,9 +1,12 @@
+import BottomNavigation from "@/components/BottomNavigation";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
+  Image,
   ImageBackground,
   Share,
   StyleSheet,
@@ -14,10 +17,11 @@ import {
 import QRCode from "react-native-qrcode-svg";
 
 const ShowQRCodeScreen = () => {
-const route = useRoute();
-const navigation = useNavigation();
-const { qrValue } = route.params || {};
-const value = qrValue || 'No data received';
+  const { t } = useTranslation();
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { qrValue } = route.params || {};
+  const value = qrValue || 'No data received';
 
   // Handle sharing
   const handleShare = async () => {
@@ -26,7 +30,7 @@ const value = qrValue || 'No data received';
         message: value,
       });
     } catch (error) {
-      Alert.alert("Error", "Unable to share the QR code.");
+      Alert.alert("Error", t("errorShare"));
     }
   };
 
@@ -44,7 +48,7 @@ const value = qrValue || 'No data received';
     const updated = [newEntry, ...parsed];
 
     await AsyncStorage.setItem("qrHistory", JSON.stringify(updated));
-    Alert.alert("Saved!", "QR Code saved to history.");
+    Alert.alert(t("saved"), t("savedMessage"));
   };
 
   return (
@@ -62,12 +66,12 @@ const value = qrValue || 'No data received';
           >
             <Ionicons name="chevron-back" size={20} color="#FFD700" />
           </TouchableOpacity>
-          <Text style={styles.title}>Show QR Code</Text>
+          <Text style={styles.title}>{t("title")}</Text>
         </View>
 
         {/* Data Section */}
         <View style={styles.resultCard}>
-          <Text style={styles.dataType}>Data</Text>
+          <Text style={styles.dataType}>{t("dataLabel")}</Text>
           <Text style={styles.url}>{value}</Text>
         </View>
 
@@ -82,39 +86,19 @@ const value = qrValue || 'No data received';
             <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
               <Ionicons name="share-social-outline" size={24} color="#000" />
             </TouchableOpacity>
-            <Text style={styles.actionText}>Share</Text>
+            <Text style={styles.actionText}>{t("share")}</Text>
           </View>
 
           <View style={styles.actionWrapper}>
             <TouchableOpacity style={styles.actionButton} onPress={handleSave}>
               <Ionicons name="save-outline" size={24} color="#000" />
             </TouchableOpacity>
-            <Text style={styles.actionText}>Save</Text>
+            <Text style={styles.actionText}>{t("save")}</Text>
           </View>
         </View>
 
         {/* Footer */}
-        <View style={styles.footer}>
-          <TouchableOpacity
-            style={styles.footerButton}
-            onPress={() => navigation.navigate("Generate", { screen: "Generate" })}
-          >
-            <Ionicons name="qr-code-outline" size={22} color="white" />
-            <Text style={styles.footerText}>Generate</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.centerButton}>
-            <Ionicons name="scan-outline" size={30} color="#000" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.footerButton}
-            onPress={() => navigation.navigate("history")}
-          >
-            <Ionicons name="time-outline" size={22} color="white" />
-            <Text style={styles.footerText}>History</Text>
-          </TouchableOpacity>
-        </View>
+        <BottomNavigation />
       </View>
     </ImageBackground>
   );
@@ -154,28 +138,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   actionText: { marginTop: 6, fontWeight: "600", color: "#fff", fontSize: 14 },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    backgroundColor: "#333",
-    paddingVertical: 15,
-    borderRadius: 10,
-    paddingTop: 40,
-    marginTop: 60,
-    position: "relative",
-  },
-  footerButton: { alignItems: "center" },
-  footerText: { color: "white", fontSize: 14, marginTop: 5 },
-  centerButton: {
-    position: "absolute",
-    top: -35,
-    alignSelf: "center",
-    backgroundColor: "#FFD700",
-    padding: 15,
-    borderRadius: 50,
-    elevation: 10,
-  },
+ 
 });
 
 export default ShowQRCodeScreen;

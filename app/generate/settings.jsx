@@ -1,34 +1,34 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 const SettingsScreen = () => {
   const router = useRouter();
   const [vibrateEnabled, setVibrateEnabled] = useState(true);
   const [beepEnabled, setBeepEnabled] = useState(false);
+  const { t } = useTranslation();
 
-  const handleRateUs = () => Alert.alert('Rate Us', 'Redirecting to store...');
-  const handlePrivacy = () => Alert.alert('Privacy Policy', 'Opening privacy policy...');
-  const handleShare = () => Alert.alert('Share', 'Sharing the app...');
+  const handleRateUs = () => Alert.alert(t('rateUs'), t('redirectingToStore'));
+  const handlePrivacy = () => Alert.alert(t('privacyPolicy'), t('openingPrivacyPolicy'));
+  const handleShare = () => Alert.alert(t('share'), t('sharingTheApp'));
 
   return (
     <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={20} color="#FFD700" />
-      </TouchableOpacity>
+    
+      
 
       {/* Settings Header */}
-      <Text style={styles.sectionHeader}>Settings</Text>
+      <Text style={styles.sectionHeader}>{t('settings')}</Text>
 
       {/* Vibrate Toggle */}
       <View style={styles.settingCard}>
         <View style={styles.settingTextContainer}>
           <MaterialCommunityIcons name="vibrate" size={24} color="#fff" />
           <View style={{ marginLeft: 10 }}>
-            <Text style={styles.settingTitle}>Vibrate</Text>
-            <Text style={styles.settingSubtitle}>Vibration when scan is done.</Text>
+            <Text style={styles.settingTitle}>{t('vibrate')}</Text>
+            <Text style={styles.settingSubtitle}>{t('vibrationWhenScanIsDone')}</Text>
           </View>
         </View>
         <Switch
@@ -44,8 +44,8 @@ const SettingsScreen = () => {
         <View style={styles.settingTextContainer}>
           <Ionicons name="volume-high-outline" size={24} color="#fff" />
           <View style={{ marginLeft: 10 }}>
-            <Text style={styles.settingTitle}>Beep</Text>
-            <Text style={styles.settingSubtitle}>Beep when scan is done.</Text>
+            <Text style={styles.settingTitle}>{t('beep')}</Text>
+            <Text style={styles.settingSubtitle}>{t('beepWhenScanIsDone')}</Text>
           </View>
         </View>
         <Switch
@@ -57,14 +57,14 @@ const SettingsScreen = () => {
       </View>
 
       {/* Support Section */}
-      <Text style={styles.sectionHeader}>Support</Text>
+      <Text style={styles.sectionHeader}>{t('support')}</Text>
 
       <TouchableOpacity style={styles.supportCard} onPress={handleRateUs}>
         <View style={styles.settingTextContainer}>
           <Ionicons name="star-outline" size={24} color="#fff" />
           <View style={{ marginLeft: 10 }}>
-            <Text style={styles.settingTitle}>Rate Us</Text>
-            <Text style={styles.settingSubtitle}>Your best reward to us.</Text>
+            <Text style={styles.settingTitle}>{t('rateUs')}</Text>
+            <Text style={styles.settingSubtitle}>{t('yourBestReward')}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -73,8 +73,8 @@ const SettingsScreen = () => {
         <View style={styles.settingTextContainer}>
           <Ionicons name="shield-checkmark-outline" size={24} color="#fff" />
           <View style={{ marginLeft: 10 }}>
-            <Text style={styles.settingTitle}>Privacy Policy</Text>
-            <Text style={styles.settingSubtitle}>Follow our policies that benefits you.</Text>
+            <Text style={styles.settingTitle}>{t('privacyPolicy')}</Text>
+            <Text style={styles.settingSubtitle}>{t('followOurPolicies')}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -83,8 +83,8 @@ const SettingsScreen = () => {
         <View style={styles.settingTextContainer}>
           <Ionicons name="share-social-outline" size={24} color="#fff" />
           <View style={{ marginLeft: 10 }}>
-            <Text style={styles.settingTitle}>Share</Text>
-            <Text style={styles.settingSubtitle}>Share app with others.</Text>
+            <Text style={styles.settingTitle}>{t('share')}</Text>
+            <Text style={styles.settingSubtitle}>{t('shareAppWithOthers')}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -124,10 +124,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
     borderBottomWidth: 2,
     borderBottomColor: '#FFD700',
   },

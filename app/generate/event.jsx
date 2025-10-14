@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Image,
   ImageBackground,
   ScrollView,
@@ -16,7 +18,8 @@ import uuid from 'react-native-uuid';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const QRCodeEvent = () => {
-  const navigation = useNavigation(); // use a type if you have a TypeScript type for your stack
+  const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const [form, setForm] = useState({
     name: '',
@@ -27,9 +30,7 @@ const QRCodeEvent = () => {
   });
   const [qrValue, setQrValue] = useState(null);
 
-  const handleChange = (key, value) => {
-    setForm({ ...form, [key]: value });
-  };
+  const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
   const saveCreateToHistory = async (data) => {
     try {
@@ -52,7 +53,7 @@ const QRCodeEvent = () => {
 
   const handleGenerateQRCode = () => {
     if (!form.name.trim() || !form.start.trim() || !form.end.trim()) {
-      alert('Please enter event name and start/end dates');
+      Alert.alert(t('Error'), t('Please enter event name and start/end dates'));
       return;
     }
 
@@ -66,87 +67,88 @@ END:VEVENT`;
 
     setQrValue(vEvent);
     saveCreateToHistory(vEvent);
-
     navigation.navigate('openFile', { scannedData: vEvent });
   };
 
   return (
     <ImageBackground
       source={require('../../assets/images/background.png')}
-      style={styles.bgImage}
+      style={styles.bg}
       resizeMode="cover"
     >
       <View style={styles.overlay}>
         {/* Header */}
-        <View style={styles.headerRow}>
+        <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Icon name="chevron-left" size={34} color="#F7A000" />
           </TouchableOpacity>
-          <Text style={styles.title}>Event</Text>
+          <Text style={styles.headerTitle}>{t('event')}</Text>
         </View>
 
+        {/* Scrollable Form */}
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.card}>
             <View style={styles.iconBox}>
               <Image
                 source={require('../../assets/images/event.png')}
-                style={{ width: 50, height: 50 }}
+                style={{ width: 60, height: 60 }}
               />
             </View>
 
-            <Text style={styles.label}>Event Name</Text>
+            <Text style={styles.label}>{t('eventName')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter name"
+              placeholder={t('enterEventName')}
               placeholderTextColor="#999"
               value={form.name}
               onChangeText={(v) => handleChange('name', v)}
             />
 
-            <Text style={styles.label}>Start Date and Time</Text>
+            <Text style={styles.label}>{t('startDateTime')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="12 Dec 2023, 10:00 AM"
+              placeholder={t('enterStartDateTime')}
               placeholderTextColor="#999"
               value={form.start}
               onChangeText={(v) => handleChange('start', v)}
             />
 
-            <Text style={styles.label}>End Date and Time</Text>
+            <Text style={styles.label}>{t('endDateTime')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="12 Dec 2023, 12:00 PM"
+              placeholder={t('enterEndDateTime')}
               placeholderTextColor="#999"
               value={form.end}
               onChangeText={(v) => handleChange('end', v)}
             />
 
-            <Text style={styles.label}>Location</Text>
+            <Text style={styles.label}>{t('location')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter location"
+              placeholder={t('enterLocation')}
               placeholderTextColor="#999"
               value={form.location}
               onChangeText={(v) => handleChange('location', v)}
             />
 
-            <Text style={styles.label}>Description</Text>
+            <Text style={styles.label}>{t('description')}</Text>
             <TextInput
-              style={styles.input}
-              placeholder="Enter description"
+              style={[styles.input, { height: 80, textAlignVertical: 'top' }]}
+              placeholder={t('enterDescription')}
               placeholderTextColor="#999"
               value={form.description}
+              multiline
               onChangeText={(v) => handleChange('description', v)}
             />
 
             <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-              <Text style={styles.buttonText}>Generate QR Code</Text>
+              <Text style={styles.buttonText}>{t('generateQrCode')}</Text>
             </TouchableOpacity>
 
             {qrValue && (
-              <View style={styles.qrWrapper}>
+              <View style={styles.qrSection}>
                 <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-                <Text style={styles.qrText}>Scan to add event</Text>
+                <Text style={styles.qrLabel}>{t('scanToAddEvent')}</Text>
               </View>
             )}
           </View>
@@ -159,66 +161,84 @@ END:VEVENT`;
 export default QRCodeEvent;
 
 const styles = StyleSheet.create({
-  bgImage: {
+  bg: {
     flex: 1,
     width: '100%',
     height: '100%',
   },
   overlay: {
     flex: 1,
-    padding: 20,
+    backgroundColor: 'rgba(0,0,0,0.65)',
+    paddingHorizontal: 20,
+    paddingTop: 50,
   },
-  headerRow: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 40,
     marginBottom: 40,
   },
   backButton: {
-    width: 40,
-    height: 40,
+    width: 42,
+    height: 42,
     backgroundColor: '#2A2A2A',
-    borderRadius: 10,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
-  title: {
+  headerTitle: {
     color: '#fff',
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: '700',
   },
   card: {
     backgroundColor: '#2A2A2A',
-    borderRadius: 10,
-    padding: 20,
-    paddingTop: 30,
-    elevation: 8,
+    borderRadius: 12,
+    padding: 24,
     borderTopWidth: 2,
     borderBottomWidth: 2,
     borderColor: '#F7A000',
+    elevation: 6,
   },
-  iconBox: { alignItems: 'center', marginBottom: 20 },
-  label: { color: '#ccc', fontSize: 14, marginBottom: 5, marginTop: 10 },
+  iconBox: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  label: {
+    color: '#ccc',
+    fontSize: 15,
+    marginBottom: 8,
+  },
   input: {
     backgroundColor: '#1E1E1E',
     borderWidth: 1,
     borderColor: '#444',
     borderRadius: 8,
-    padding: 10,
+    padding: 12,
     color: '#fff',
+    fontSize: 15,
     marginBottom: 20,
   },
   button: {
-    width: '50%',
+    width: '60%',
     alignSelf: 'center',
     backgroundColor: '#F7A000',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 10,
   },
-  buttonText: { color: '#1E1E1E', fontWeight: 'bold', fontSize: 16 },
-  qrWrapper: { marginTop: 30, alignItems: 'center', justifyContent: 'center' },
-  qrText: { marginTop: 12, color: '#fff', fontSize: 16 },
+  buttonText: {
+    color: '#1E1E1E',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  qrSection: {
+    marginTop: 40,
+    alignItems: 'center',
+  },
+  qrLabel: {
+    marginTop: 12,
+    color: '#fff',
+    fontSize: 16,
+  },
 });

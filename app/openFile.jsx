@@ -1,7 +1,9 @@
+import BottomNavigation from '@/components/BottomNavigation';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import React from 'react';
+import { useTranslation } from 'react-i18next'; // 👈 Import hook
 import {
   Alert,
   Image,
@@ -16,13 +18,14 @@ import {
 export default function ResultScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const { t } = useTranslation(); // 👈 useTranslation hook
 
   const { scannedData } = route.params || {};
-  const scannedUrl = scannedData || 'No data found';
+  const scannedUrl = scannedData || t('noData'); // dynamic translation
 
   const handleCopy = () => {
     Clipboard.setStringAsync(scannedUrl);
-    Alert.alert('Copied!', 'The data has been copied to your clipboard.');
+    Alert.alert(t('copiedTitle'), t('copiedMessage'));
   };
 
   const handleShare = async () => {
@@ -31,7 +34,7 @@ export default function ResultScreen() {
         message: scannedUrl,
       });
     } catch (error) {
-      Alert.alert('Error', 'Unable to share the content.');
+      Alert.alert(t('errorTitle'), t('errorMessage'));
     }
   };
 
@@ -47,21 +50,21 @@ export default function ResultScreen() {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
             <Ionicons name="arrow-back" size={20} color="#FFD700" />
           </TouchableOpacity>
-          <Text style={styles.title}>Result</Text>
+          <Text style={styles.title}>{t('titleresult')}</Text>
         </View>
 
         {/* Result Card */}
         <View style={styles.resultCard}>
           <Image source={require('../assets/images/qricon.png')} style={styles.qrIcon} />
           <View style={styles.resultInfo}>
-            <Text style={styles.dataType}>Data</Text>
+            <Text style={styles.dataType}>{t('dataType')}</Text>
             <Text style={styles.timestamp}>{new Date().toLocaleString()}</Text>
           </View>
           <Text style={styles.url}>{scannedUrl}</Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('showqr', { qrValue: scannedUrl })}
           >
-            <Text style={styles.showQR}>Show QR Code</Text>
+            <Text style={styles.showQR}>{t('showQR')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -71,42 +74,19 @@ export default function ResultScreen() {
             <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
               <Image source={require('../assets/images/share.png')} style={styles.actionIcon} />
             </TouchableOpacity>
-            <Text style={styles.actionText}>Share</Text>
+            <Text style={styles.actionText}>{t('share')}</Text>
           </View>
 
           <View style={styles.actionWrapper}>
             <TouchableOpacity style={styles.actionButton} onPress={handleCopy}>
               <Image source={require('../assets/images/copy.png')} style={styles.actionIcon} />
             </TouchableOpacity>
-            <Text style={styles.actionText}>Copy</Text>
+            <Text style={styles.actionText}>{t('copy')}</Text>
           </View>
         </View>
 
         {/* Footer */}
-        <View style={styles.footer}>
-          <TouchableOpacity
-            style={styles.footerButton}
-            onPress={() => navigation.navigate('Generate')}
-          >
-            <Ionicons name="qr-code-outline" size={22} color="white" />
-            <Text style={styles.footerText}>Generate</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.centerButton}>
-            <Image
-              source={require('../assets/images/footercenter1.png')}
-              style={{ width: 40, height: 40 }}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.footerButton}
-            onPress={() => navigation.navigate('history')}
-          >
-            <Ionicons name="time-outline" size={22} color="white" />
-            <Text style={styles.footerText}>History</Text>
-          </TouchableOpacity>
-        </View>
+        <BottomNavigation />
       </View>
     </ImageBackground>
   );
@@ -201,37 +181,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
   },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: '#333',
-    paddingVertical: 15,
-    borderRadius: 10,
-    paddingTop: 40,
-    position: 'relative',
-    marginTop: 240,
-  },
-  footerButton: {
-    alignItems: 'center',
-  },
-  footerText: {
-    color: 'white',
-    fontSize: 14,
-    marginTop: 5,
-  },
-  centerButton: {
-    position: 'absolute',
-    top: -35,
-    alignSelf: 'center',
-    backgroundColor: '#FFD700',
-    padding: 15,
-    borderRadius: 50,
-    shadowColor: '#FFD700',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 10,
-    elevation: 10,
-    zIndex: 10,
-  },
+  
 });

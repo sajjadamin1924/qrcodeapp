@@ -2,19 +2,17 @@ import BottomNavigation from '@/components/BottomNavigation';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   Image,
   ImageBackground,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HistoryScreen() {
   const [selectedTab, setSelectedTab] = useState('scan');
@@ -43,25 +41,16 @@ export default function HistoryScreen() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <StatusBar translucent backgroundColor="transparent" />
-      <ImageBackground
-        source={require('../../assets/images/background.png')}
-        style={StyleSheet.absoluteFillObject}
-        resizeMode="cover"
-      />
-
-      <SafeAreaView style={styles.overlay} edges={['left', 'right', 'bottom']}>
+    <ImageBackground
+      source={require('../../assets/images/background.png')}
+      style={styles.bgImage}
+      resizeMode="cover"
+    >
+      <View style={styles.overlay}>
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="chevron-back" size={26} color="#FFD700" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>{t('History')}</Text>
-          <View style={{ width: 30 }} /> {/* Spacer for alignment */}
+          <Text style={styles.headerTitle}>{t("History")}</Text>
+         
         </View>
 
         {/* Tabs */}
@@ -78,7 +67,7 @@ export default function HistoryScreen() {
                 selectedTab === 'scan' ? styles.tabTextActive : styles.tabText
               }
             >
-              {t('Scan')}
+              {t("Scan")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -93,7 +82,7 @@ export default function HistoryScreen() {
                 selectedTab === 'create' ? styles.tabTextActive : styles.tabText
               }
             >
-              {t('Create')}
+              {t("Create")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -126,44 +115,37 @@ export default function HistoryScreen() {
         />
 
         {/* Footer */}
-        <BottomNavigation />
-      </SafeAreaView>
-    </View>
+      <BottomNavigation />
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  bgImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
   overlay: {
     flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 20,
     backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'space-between',
   },
   header: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 40,
-    paddingHorizontal: 20,
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
   },
-  backButton: {
-    backgroundColor: '#2a2a2a',
-    padding: 8,
-    borderRadius: 10,
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#fff',
-    textAlign: 'center',
-    flex: 1,
-  },
+  headerTitle: { fontSize: 24, color: '#fff', fontWeight: '600' },
   tabs: {
     flexDirection: 'row',
     backgroundColor: '#2a2a2a',
     borderRadius: 10,
     overflow: 'hidden',
-    marginHorizontal: 20,
-    marginVertical: 20,
+    marginBottom: 20,
   },
   tabButton: {
     flex: 1,
@@ -174,10 +156,7 @@ const styles = StyleSheet.create({
   tabButtonActive: { backgroundColor: '#FFD700' },
   tabText: { color: '#fff', fontSize: 16 },
   tabTextActive: { color: '#000', fontWeight: '600', fontSize: 16 },
-  list: {
-    paddingBottom: 100,
-    paddingHorizontal: 20,
-  },
+  list: { paddingBottom: 100 },
   listItem: {
     flexDirection: 'row',
     backgroundColor: '#2a2a2a',
@@ -194,4 +173,5 @@ const styles = StyleSheet.create({
   type: { color: '#aaa', fontSize: 12 },
   listRight: { alignItems: 'flex-end' },
   date: { color: '#aaa', fontSize: 12, marginBottom: 5 },
+  
 });

@@ -17,7 +17,7 @@ export default function PermissionScreen() {
 
   useEffect(() => {
     if (cameraPermission?.granted && galleryGranted && notificationGranted) {
-      navigation.navigate("scanner");
+      navigation.navigate("MainApp");
     }
   }, [cameraPermission, galleryGranted, notificationGranted]);
 

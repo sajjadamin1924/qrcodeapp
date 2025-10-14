@@ -1,6 +1,5 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import QRCodeBusiness from '../generate/business';
 import QRCodeContact from '../generate/contact';
 import EmailScreen from '../generate/email';
@@ -9,11 +8,12 @@ import GenerateQrScreen from '../generate/Generate';
 import HistoryScreen from '../generate/history';
 import InstagramQRCodeScreen from '../generate/instagram';
 import LanguageScreen from '../generate/languageScreen';
+import LocationScreen from '../generate/location';
 import PermissionScreen from '../generate/permissionScreen';
 import ScannerScreen from '../generate/scanner';
 import SettingsScreen from '../generate/settings';
 import TelephoneQRCodeScreen from '../generate/telephone';
-import QRCodeScreen from '../generate/text';
+import TextQRCodeScreen from '../generate/text';
 import TwitterQRCodeScreen from '../generate/twitter';
 import QRCodeWebsite from '../generate/website';
 import WhatsAppQRCodeScreen from '../generate/whatsapp';
@@ -22,16 +22,16 @@ import ResultScreen from '../openFile';
 import ShowQRCodeScreen from '../showqr';
 import WelcomeScreen from '../welcomescreen';
 import DrawerNavigator from './DrawerNavigator';
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+   
       <Stack.Navigator
         initialRouteName="Welcome"
         screenOptions={{
           headerShown: false,
-          animation: 'fade',
+          
         }}
       >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
@@ -48,15 +48,17 @@ const AppNavigator = () => {
         <Stack.Screen name="scanner" component={ScannerScreen} />
         <Stack.Screen name="setting" component={SettingsScreen} />
         <Stack.Screen name="telephone" component={TelephoneQRCodeScreen} />
-        <Stack.Screen name="text" component={QRCodeScreen} />
+        <Stack.Screen name="text" component={TextQRCodeScreen} />
         <Stack.Screen name="twitter" component={TwitterQRCodeScreen} />
         <Stack.Screen name="website" component={QRCodeWebsite} />
         <Stack.Screen name="whatsapp" component={WhatsAppQRCodeScreen} />
         <Stack.Screen name="wifi" component={QRCodeWifi} />
         <Stack.Screen name="showqr" component={ShowQRCodeScreen} />
         <Stack.Screen name="openFile" component={ResultScreen} />
+        <Stack.Screen name="location" component={LocationScreen} />
+
       </Stack.Navigator>
-    </GestureHandlerRootView>
+   
   );
 };
 

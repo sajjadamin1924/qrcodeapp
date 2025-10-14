@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import * as Location from 'expo-location';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -8,7 +9,6 @@ import {
   ImageBackground,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -16,11 +16,24 @@ import QRCode from 'react-native-qrcode-svg';
 import uuid from 'react-native-uuid';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const InstagramScreen = () => {
-  const [username, setUsername] = useState('');
+export default function LocationQRCodeScreen() {
+  const [location, setLocation] = useState(null);
   const [qrValue, setQrValue] = useState(null);
   const navigation = useNavigation();
   const { t } = useTranslation();
+
+  // Get current location
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(t('permissionDenied'), t('locationPermissionAlert'));
+        return;
+      }
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      setLocation(currentLocation.coords);
+    })();
+  }, []);
 
   const saveCreateToHistory = async (data) => {
     try {
@@ -36,19 +49,17 @@ const InstagramScreen = () => {
 
       const newHistory = [newItem, ...history];
       await AsyncStorage.setItem('qrHistory', JSON.stringify(newHistory));
-      Alert.alert(t('Success'), t('QR Code generated and saved to history!'));
     } catch (error) {
-      Alert.alert(t('Error'), t('Failed to save QR code.'));
+      console.error('Error saving created QR:', error);
     }
   };
 
   const handleGenerateQRCode = () => {
-    if (!username.trim()) {
-      Alert.alert(t('Error'), t('Please enter a valid Instagram username'));
+    if (!location) {
+      Alert.alert(t('errorTitle'), t('locationNotFound'));
       return;
     }
-
-    const value = `https://instagram.com/${username.trim()}`;
+    const value = `geo:${location.latitude},${location.longitude}`;
     setQrValue(value);
     saveCreateToHistory(value);
     navigation.navigate('openFile', { scannedData: value });
@@ -57,114 +68,91 @@ const InstagramScreen = () => {
   return (
     <ImageBackground
       source={require('../../assets/images/background.png')}
-      style={styles.bg}
+      style={styles.background}
       resizeMode="cover"
     >
       <View style={styles.overlay}>
         {/* Header */}
-        <View style={styles.header}>
+        <View style={styles.headerRow}>
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Icon name="chevron-left" size={34} color="#F7A000" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>{t('instagram')}</Text>
+          <Text style={styles.title}>{t('location')}</Text>
         </View>
 
-        {/* Form Card */}
+        {/* Card */}
         <View style={styles.card}>
           <View style={styles.iconBox}>
             <Image
-              source={require('../../assets/images/insta.png')}
-              style={{ width: 60, height: 60 }}
+              source={require('../../assets/images/location.png')}
+              style={{ width: 50, height: 50 }}
             />
           </View>
 
-          <Text style={styles.label}>{t('username')}</Text>
-          <TextInput
-            style={styles.input}
-            placeholder={t('enterInstagramUsername')}
-            placeholderTextColor="#999"
-            value={username}
-            onChangeText={setUsername}
-          />
+          <Text style={styles.label}>{t('currentLocation')}</Text>
+          <Text style={styles.locationText}>
+            {location
+              ? `${t('latitude')}: ${location.latitude.toFixed(6)}\n${t('longitude')}: ${location.longitude.toFixed(6)}`
+              : t('fetchingLocation')}
+          </Text>
 
           <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
             <Text style={styles.buttonText}>{t('generateQrCode')}</Text>
           </TouchableOpacity>
         </View>
 
-        {/* QR Code Section */}
+        {/* QR Preview */}
         {qrValue && (
-          <View style={styles.qrSection}>
+          <View style={styles.qrWrapper}>
             <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-            <Text style={styles.qrLabel}>{t('scanThisQr')}</Text>
+            <Text style={styles.qrText}>{t('scanThisQr')}</Text>
           </View>
         )}
       </View>
     </ImageBackground>
   );
-};
-
-export default InstagramScreen;
+}
 
 const styles = StyleSheet.create({
-  bg: {
+  background: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.65)',
-    paddingHorizontal: 20,
+    backgroundColor: "rgba(30,30,30,0.6)",
     paddingTop: 50,
+    paddingHorizontal: 20,
   },
-  header: {
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 40,
   },
   backButton: {
-    width: 42,
-    height: 42,
+    width: 40,
+    height: 40,
     backgroundColor: '#2A2A2A',
-    borderRadius: 12,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
-  headerTitle: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: '700',
-  },
+  title: { color: '#fff', fontSize: 22, fontWeight: 'bold' },
   card: {
     backgroundColor: '#2A2A2A',
-    borderRadius: 12,
-    padding: 24,
+    borderRadius: 10,
+    padding: 20,
+    paddingTop: 30,
+    elevation: 8,
     borderTopWidth: 2,
     borderBottomWidth: 2,
     borderColor: '#F7A000',
-    elevation: 6,
   },
-  iconBox: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  label: {
-    color: '#ccc',
-    fontSize: 15,
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: '#1E1E1E',
-    borderWidth: 1,
-    borderColor: '#444',
-    borderRadius: 8,
-    padding: 12,
-    color: '#fff',
-    fontSize: 15,
-    marginBottom: 20,
-  },
+  iconBox: { alignItems: 'center', marginBottom: 20 },
+  label: { color: '#ccc', fontSize: 14, marginBottom: 10, textAlign: 'center' },
+  locationText: { color: '#fff', textAlign: 'center', marginBottom: 20 },
   button: {
     width: '60%',
     alignSelf: 'center',
@@ -173,18 +161,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
   },
-  buttonText: {
-    color: '#1E1E1E',
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  qrSection: {
-    marginTop: 40,
-    alignItems: 'center',
-  },
-  qrLabel: {
-    marginTop: 12,
-    color: '#fff',
-    fontSize: 16,
-  },
+  buttonText: { color: '#1E1E1E', fontWeight: 'bold', fontSize: 16 },
+  qrWrapper: { marginTop: 40, alignItems: 'center', justifyContent: 'center' },
+  qrText: { marginTop: 12, color: '#fff', fontSize: 16 },
 });

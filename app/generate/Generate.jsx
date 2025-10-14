@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import BottomNavigation from "@/components/BottomNavigation";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useTranslation } from "react-i18next"; // ✅ import i18n hook
@@ -39,11 +39,15 @@ export default function GenerateQrScreen() {
   const accent = "#FDB623";
   const textColor = scheme === "dark" ? "#FFFFFF" : "#000000";
 
-  const renderItem = ({ item }) => (
+ const renderItem = ({ item }) => {
+  const translationKey =
+    item.label.toLowerCase() === "wi-fi" ? "wifi" : item.label.toLowerCase();
+
+  return (
     <TouchableOpacity
       style={[styles.card, { backgroundColor: cardColor, borderColor: accent }]}
       onPress={() => {
-        if (item.label.toLowerCase() === "location") return;
+        
 
         let route = item.label.toLowerCase();
         if (item.label === "Wi-Fi") route = "wifi";
@@ -52,10 +56,14 @@ export default function GenerateQrScreen() {
     >
       <Image source={item.icon} style={styles.icon} />
       <View style={styles.labelWrapper}>
-        <Text style={[styles.label, { color: textColor }]}>{t(item.label.toLowerCase())}</Text>
+        <Text style={[styles.label, { color: textColor }]}>
+          {t(translationKey)}
+        </Text>
       </View>
     </TouchableOpacity>
   );
+};
+
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor }]}>
@@ -75,26 +83,7 @@ export default function GenerateQrScreen() {
       />
 
       {/* Bottom Navigation */}
-      <View style={styles.footer}>
-        <View style={styles.footerRow}>
-          <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate("generate")}>
-            <Ionicons name="qr-code-outline" size={22} color="white" />
-            <Text style={styles.footerText}>{t("Generate")}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate("history")}>
-            <Ionicons name="time-outline" size={22} color="white" />
-            <Text style={styles.footerText}>{t("History")}</Text>
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity style={styles.centerButton} onPress={() => navigation.navigate("scanner")}>
-          <Image
-            source={require("../../assets/images/footercenter1.png")}
-            style={{ width: 40, height: 40 }}
-          />
-        </TouchableOpacity>
-      </View>
+      <BottomNavigation />
     </SafeAreaView>
   );
 }
@@ -136,41 +125,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   label: { fontSize: 13, fontWeight: "600" },
-  footer: {
-    height: 70,
-    backgroundColor: "#333",
-    position: "relative",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 60,
-    borderRadius: 10,
-  },
-  footerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    paddingHorizontal: 30,
-  },
-  footerButton: {
-    alignItems: "center",
-  },
-  footerText: {
-    color: "white",
-    fontSize: 14,
-    marginTop: 5,
-  },
-  centerButton: {
-    position: "absolute",
-    top: -25,
-    alignSelf: "center",
-    backgroundColor: "#FFD700",
-    padding: 15,
-    borderRadius: 50,
-    shadowColor: "#FFD700",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 10,
-    elevation: 10,
-    zIndex: 10,
-  },
+  
+
 });
