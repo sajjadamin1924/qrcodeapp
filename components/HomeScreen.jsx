@@ -138,23 +138,28 @@ export default function HomeScreen() {
               style={[styles.scanLine, { transform: [{ translateY }] }]}
             />
           </View>
+          {/* Zoom Slider */}
+          <View style={styles.sliderContainer}>
+            <TouchableOpacity onPress={() => setZoom((z) => Math.max(0, z - 0.1))}>
+              <Text style={styles.sliderText}>−</Text>
+            </TouchableOpacity>
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={1}
+              step={0.05}
+              value={zoom}
+              onValueChange={setZoom}
+              thumbTintColor="#FFD700"
+              minimumTrackTintColor="#FFFFFF"
+            />
+            <TouchableOpacity onPress={() => setZoom((z) => Math.min(1, z + 0.1))}>
+              <Text style={styles.sliderText}>+</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        {/* Zoom Slider */}
-        <View style={styles.sliderContainer}>
-          <Text style={styles.sliderText}>-</Text>
-          <Slider
-            style={styles.slider}
-            minimumValue={0}
-            maximumValue={1}
-            step={0.05}
-            value={zoom}
-            onValueChange={setZoom}
-            thumbTintColor="#FFD700"
-            minimumTrackTintColor="#FFFFFF"
-          />
-          <Text style={styles.sliderText}>+</Text>
-        </View>
+
 
         {/* Footer */}
         <BottomNavigation />
@@ -193,8 +198,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 80,
+    marginTop: 40,
+    paddingHorizontal: 40
   },
   slider: { flex: 1, marginHorizontal: 10 },
-  sliderText: { color: "white", fontSize: 28 },
+  sliderText: {
+  color: "white",
+  fontSize: 28,
+  paddingHorizontal: 10,
+},
 });
