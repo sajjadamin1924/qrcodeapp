@@ -225,7 +225,8 @@ const resources = {
       "openInBrowser": "Open in Browser",
       "invalidUrl": "Invalid URL",
       "thisIsNotAValidUrl": "This is not a valid URL",
-      "cannotOpenUrl": "Cannot open this URL"
+      "cannotOpenUrl": "Cannot open this URL",
+      "openInBrowser":"Open in Browser"
 
     },
   },
@@ -451,9 +452,12 @@ const resources = {
       "openInBrowser": "براؤزر میں کھولیں",
       "invalidUrl": "غلط یو آر ایل",
       "thisIsNotAValidUrl": "یہ ایک درست یو آر ایل نہیں ہے",
-      "cannotOpenUrl": "یو آر ایل نہیں کھولا جا سکا"
+      "cannotOpenUrl": "یو آر ایل نہیں کھولا جا سکا",
+      "openInBrowser":"براؤزر میں کھولیں",
 
-    },
+    }, 
+  
+    
   },
 
   ar: {
@@ -683,12 +687,8 @@ const resources = {
       "openInBrowser": "افتح في المتصفح",
       "invalidUrl": "رابط غير صالح",
       "thisIsNotAValidUrl": "هذا ليس رابطًا صالحًا",
-      "cannotOpenUrl": "لا يمكن فتح هذا الرابط"
-
-
-
-
-
+      "cannotOpenUrl": "لا يمكن فتح هذا الرابط",
+      "openInBrowser": "افتح في المتصفح",
     },
   },
 };

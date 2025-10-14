@@ -53,16 +53,16 @@ export default function HistoryScreen() {
 
       <SafeAreaView style={styles.overlay} edges={['left', 'right', 'bottom']}>
         {/* Header */}
-        <Text style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Ionicons name="chevron-back" size={26} color="#FFD700" />
           </TouchableOpacity>
+
           <Text style={styles.headerTitle}>{t('History')}</Text>
-          <View style={{ width: 30 }} /> {/* Spacer for alignment */}
-        </Text>
+
+          <Ionicons name="chevron-back" size={26} color="transparent" />
+        </View>
+
 
         {/* Tabs */}
         <View style={styles.tabs}>
@@ -91,45 +91,42 @@ export default function HistoryScreen() {
             <Text
               style={
                 selectedTab === 'create' ? styles.tabTextActive : styles.tabText
-              }
-            >
+              }>
               {t('Create')}
             </Text>
           </TouchableOpacity>
         </View>
 
         {/* History List */}
-       <FlatList
-  data={history.filter((item) => item.type === selectedTab)}
-  keyExtractor={(item) => item.id}
-  contentContainerStyle={styles.list}
-  renderItem={({ item }) => (
-    <TouchableOpacity
-      style={styles.listItem}
-      onPress={() => navigation.navigate('QRDetails', { item })}
-      activeOpacity={0.7}
-    >
-      <Image
-        source={require('../../assets/images/qricon.png')}
-        style={styles.qrIcon}
-      />
-      <View style={styles.listText}>
-        <Text style={styles.url} numberOfLines={1}>
-          {item.url}
-        </Text>
-        <Text style={styles.type}>{item.type.toUpperCase()}</Text>
-      </View>
-      <View style={styles.listRight}>
-        <Text style={styles.date}>{item.date}</Text>
-        <TouchableOpacity onPress={() => deleteItem(item.id)}>
-          <Ionicons name="trash" size={20} color="#FFD700" />
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
-  )}
-/>
-
-
+        <FlatList
+          data={history.filter((item) => item.type === selectedTab)}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.listItem}
+              onPress={() => navigation.navigate('QRDetails', { item })}
+              activeOpacity={0.7}
+            >
+              <Image
+                source={require('../../assets/images/qricon.png')}
+                style={styles.qrIcon}
+              />
+              <View style={styles.listText}>
+                <Text style={styles.url} numberOfLines={1}>
+                  {item.url}
+                </Text>
+                <Text style={styles.type}>{item.type.toUpperCase()}</Text>
+              </View>
+              <View style={styles.listRight}>
+                <Text style={styles.date}>{item.date}</Text>
+                <TouchableOpacity onPress={() => deleteItem(item.id)}>
+                  <Ionicons name="trash" size={20} color="#FFD700" />
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
         {/* Footer */}
         <BottomNavigation />
       </SafeAreaView>
