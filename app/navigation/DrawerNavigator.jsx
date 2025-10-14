@@ -13,6 +13,7 @@ import GenerateQrScreen from '../generate/Generate';
 import HistoryScreen from '../generate/history';
 import InstagramQRCodeScreen from '../generate/instagram';
 import LocationScreen from '../generate/location';
+import QRDetails from '../generate/QRDetails';
 import ScannerScreen from '../generate/scanner';
 import SettingsScreen from '../generate/settings';
 import TelephoneQRCodeScreen from '../generate/telephone';
@@ -207,6 +208,15 @@ export default function DrawerNavigator() {
         component={LocationScreen}
         options={{
           title: t('drawerLocation'),
+          headerShown:false,
+          drawerIcon: ({ color, size }) => <Ionicons name="location-outline" color={color} size={size} />,
+        }}
+      />
+       <Drawer.Screen
+        name="QRDetails"
+        component={QRDetails}
+        options={{
+          title: t('drawerQRDetails'),
           headerShown:false,
           drawerIcon: ({ color, size }) => <Ionicons name="location-outline" color={color} size={size} />,
         }}

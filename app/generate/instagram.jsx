@@ -36,7 +36,6 @@ const InstagramScreen = () => {
 
       const newHistory = [newItem, ...history];
       await AsyncStorage.setItem('qrHistory', JSON.stringify(newHistory));
-      Alert.alert(t('Success'), t('QR Code generated and saved to history!'));
     } catch (error) {
       Alert.alert(t('Error'), t('Failed to save QR code.'));
     }

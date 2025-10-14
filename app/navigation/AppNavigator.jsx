@@ -10,6 +10,7 @@ import InstagramQRCodeScreen from '../generate/instagram';
 import LanguageScreen from '../generate/languageScreen';
 import LocationScreen from '../generate/location';
 import PermissionScreen from '../generate/permissionScreen';
+import QRDetails from '../generate/QRDetails';
 import ScannerScreen from '../generate/scanner';
 import SettingsScreen from '../generate/settings';
 import TelephoneQRCodeScreen from '../generate/telephone';
@@ -56,6 +57,7 @@ const AppNavigator = () => {
         <Stack.Screen name="showqr" component={ShowQRCodeScreen} />
         <Stack.Screen name="openFile" component={ResultScreen} />
         <Stack.Screen name="location" component={LocationScreen} />
+        <Stack.Screen name="QRDetails" component={QRDetails} />
 
       </Stack.Navigator>
    

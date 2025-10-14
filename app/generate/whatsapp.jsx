@@ -22,22 +22,22 @@ const WhatsAppQRCodeScreen = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  const saveToHistory = async (data) => {
+    const saveCreateToHistory = async (data) => {
     try {
-      const saved = await AsyncStorage.getItem('qrHistory');
+      const saved = await AsyncStorage.getItem("qrHistory");
       const history = saved ? JSON.parse(saved) : [];
 
       const newItem = {
         id: uuid.v4().toString(),
         url: data,
         date: new Date().toLocaleString(),
-        type: 'whatsapp',
+        type: "create",
       };
 
       const newHistory = [newItem, ...history];
-      await AsyncStorage.setItem('qrHistory', JSON.stringify(newHistory));
+      await AsyncStorage.setItem("qrHistory", JSON.stringify(newHistory));
     } catch (error) {
-      console.error('Error saving WhatsApp QR:', error);
+      console.error("Error saving created QR:", error);
     }
   };
 
@@ -49,7 +49,7 @@ const WhatsAppQRCodeScreen = () => {
 
     const value = `https://wa.me/${number.trim()}`;
     setQrValue(value);
-    saveToHistory(value);
+    saveCreateToHistory(value);
     navigation.navigate('openFile', { scannedData: value });
   };
 

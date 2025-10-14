@@ -23,26 +23,26 @@ const QRCodeWifi = () => {
   const [qrValue, setQrValue] = useState(null);
   const navigation = useNavigation();
 
-  const saveToHistory = async (data) => {
+   const saveCreateToHistory = async (data) => {
     try {
-      const saved = await AsyncStorage.getItem('qrHistory');
+      const saved = await AsyncStorage.getItem("qrHistory");
       const history = saved ? JSON.parse(saved) : [];
 
       const newItem = {
         id: uuid.v4().toString(),
         url: data,
         date: new Date().toLocaleString(),
-        type: 'wifi',
+        type: "create",
       };
 
       const newHistory = [newItem, ...history];
-      await AsyncStorage.setItem('qrHistory', JSON.stringify(newHistory));
+      await AsyncStorage.setItem("qrHistory", JSON.stringify(newHistory));
     } catch (error) {
-      console.error('Error saving Wi-Fi QR:', error);
+      console.error("Error saving created QR:", error);
     }
   };
 
-  const handleGenerateQRCode = () => {
+  const handleGenerateQRCode = async () => {
     if (!ssid.trim()) {
       Alert.alert(t('error'), t('pleaseEnterValidSSID'));
       return;
@@ -50,7 +50,7 @@ const QRCodeWifi = () => {
 
     const value = `WIFI:T:WPA;S:${ssid.trim()};P:${password.trim()};;`;
     setQrValue(value);
-    saveToHistory(value);
+    saveCreateToHistory(value);
     navigation.navigate('openFile', { scannedData: value });
   };
 

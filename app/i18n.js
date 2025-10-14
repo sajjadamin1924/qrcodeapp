@@ -45,6 +45,7 @@ const resources = {
       "drawerShowQR": "Show QR",
       "drawerOpenFile": "Open File",
       "drawerLocation": "Location",
+      "drawerQRDetails": "QRDetails",
 
       // Common QR Types
       "text": "Text",
@@ -213,7 +214,18 @@ const resources = {
       "errorShareLocation": "Unable to share the location QR.",
       "scanAgain": "Scan Again",
       "permissionDenied": "Permission to access gallery was denied.",
-      "noQRCodeFound": "No QR code found in the selected image."
+      "noQRCodeFound": "No QR code found in the selected image.",
+      "drawerQRDetails": "QR Details",
+      "type": "Type",
+      "date": "Date",
+      "content": "Content",
+      "save": "Save",
+      "saved": "Saved",
+      "noDataFound": "No data found",
+      "openInBrowser": "Open in Browser",
+      "invalidUrl": "Invalid URL",
+      "thisIsNotAValidUrl": "This is not a valid URL",
+      "cannotOpenUrl": "Cannot open this URL"
 
     },
   },
@@ -428,7 +440,18 @@ const resources = {
       "locationErrorShare": "مقام کا کیو آر شیئر کرنے میں ناکام۔",
       "scanAgain": "دوبارہ اسکین کریں",
       "permissionDenied": "گیلری تک رسائی کی اجازت نہیں دی گئی۔",
-      "noQRCodeFound": "منتخب کردہ تصویر میں کوئی QR کوڈ نہیں ملا۔"
+      "noQRCodeFound": "منتخب کردہ تصویر میں کوئی QR کوڈ نہیں ملا۔",
+      "drawerQRDetails": "کیو آر کی تفصیلات",
+      "type": "قسم",
+      "date": "تاریخ",
+      "content": "مواد",
+      "save": "محفوظ کریں",
+      "saved": "محفوظ شدہ",
+      "noDataFound": "کوئی ڈیٹا نہیں ملا",
+      "openInBrowser": "براؤزر میں کھولیں",
+      "invalidUrl": "غلط یو آر ایل",
+      "thisIsNotAValidUrl": "یہ ایک درست یو آر ایل نہیں ہے",
+      "cannotOpenUrl": "یو آر ایل نہیں کھولا جا سکا"
 
     },
   },
@@ -649,7 +672,19 @@ const resources = {
       "scanAgain": "امسح مرة أخرى",
 
       "permissionDenied": "تم رفض إذن الوصول إلى المعرض.",
-      "noQRCodeFound": "لم يتم العثور على رمز QR في الصورة المحددة."
+      "noQRCodeFound": "لم يتم العثور على رمز QR في الصورة المحددة.",
+      "drawerQRDetails": "تفاصيل رمز الاستجابة السريعة",
+      "type": "النوع",
+      "date": "التاريخ",
+      "content": "المحتوى",
+      "save": "حفظ",
+      "saved": "تم الحفظ",
+      "noDataFound": "لم يتم العثور على بيانات",
+      "openInBrowser": "افتح في المتصفح",
+      "invalidUrl": "رابط غير صالح",
+      "thisIsNotAValidUrl": "هذا ليس رابطًا صالحًا",
+      "cannotOpenUrl": "لا يمكن فتح هذا الرابط"
+
 
 
 
