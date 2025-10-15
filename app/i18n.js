@@ -226,7 +226,9 @@ const resources = {
       "invalidUrl": "Invalid URL",
       "thisIsNotAValidUrl": "This is not a valid URL",
       "cannotOpenUrl": "Cannot open this URL",
-      "openInBrowser":"Open in Browser"
+      "openInBrowser": "Open in Browser",
+      "enterWebsiteAlert": "Please enter a valid website URL",
+      "locationNotFound": "please allow location"
 
     },
   },
@@ -453,11 +455,13 @@ const resources = {
       "invalidUrl": "غلط یو آر ایل",
       "thisIsNotAValidUrl": "یہ ایک درست یو آر ایل نہیں ہے",
       "cannotOpenUrl": "یو آر ایل نہیں کھولا جا سکا",
-      "openInBrowser":"براؤزر میں کھولیں",
+      "openInBrowser": "براؤزر میں کھولیں",
+      "locationNotFound": "براہ کرم مقام کی اجازت دیں"
 
-    }, 
-  
-    
+
+    },
+
+
   },
 
   ar: {
@@ -674,6 +678,8 @@ const resources = {
       "savedLocationMessage": "تم حفظ رمز الموقع في السجل.",
       "errorShareLocation": "تعذر مشاركة رمز الموقع.",
       "scanAgain": "امسح مرة أخرى",
+      "locationNotFound": "يرجى السماح بالوصول إلى الموقع",
+
 
       "permissionDenied": "تم رفض إذن الوصول إلى المعرض.",
       "noQRCodeFound": "لم يتم العثور على رمز QR في الصورة المحددة.",

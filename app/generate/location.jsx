@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet, Alert } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import QRCodeScreenLayout from '../../components/QRCodeScreenLayout';
 import { useQRCodeHistory } from '../hooks/UseQRCodeHistory';
@@ -30,7 +30,7 @@ export default function LocationQRCodeScreen() {
 
   const handleGenerateQRCode = () => {
     if (!location) {
-      Alert.alert(t('errorTitle'), t('locationNotFound'));
+      Alert.alert(t('errorTitle'), t("locationNotFound"));
       return;
     }
     const value = `geo:${location.latitude},${location.longitude}`;

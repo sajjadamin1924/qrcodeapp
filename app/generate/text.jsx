@@ -21,7 +21,7 @@ export default function TextQRCodeScreen() {
 
   const handleGenerateQRCode = () => {
     if (!text.trim()) {
-      Alert.alert(t("error"), t("Please enter some text"));
+      Alert.alert(t("error"), t("enterSomeTextAlert"));
       return;
     }
 

@@ -15,7 +15,7 @@ export default function WebsiteQRCodeScreen() {
 
   const handleGenerateQRCode = () => {
     if (!url.trim()) {
-      Alert.alert(t("Error"), t("Please enter a valid website URL"));
+      Alert.alert(t("Error"), t("enterWebsiteAlert"));
       return;
     }
 
