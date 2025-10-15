@@ -71,7 +71,6 @@ export default function DrawerNavigator() {
         component={HistoryScreen}
         options={{
           title: t('drawerHistory'),
-           headerShown: true,
           
           drawerIcon: ({ color, size }) => <Ionicons name="time-outline" color={color} size={size} />,
         }}
@@ -91,7 +90,6 @@ export default function DrawerNavigator() {
         component={QRCodeBusiness}
         options={{
           title: t('drawerBusiness'),
-          headerShown: true,
           drawerIcon: ({ color, size }) => <Ionicons name="briefcase-outline" color={color} size={size} />,
         }}
       />
@@ -100,7 +98,6 @@ export default function DrawerNavigator() {
         component={QRCodeContact}
         options={{
           title: t('drawerContact'),
-          headerShown: true,
           drawerIcon: ({ color, size }) => <Ionicons name="person-outline" color={color} size={size} />,
         }}
       />
@@ -109,7 +106,6 @@ export default function DrawerNavigator() {
         component={EmailScreen}
         options={{
           title: t('drawerEmail'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="mail-outline" color={color} size={size} />,
         }}
       />
@@ -118,7 +114,6 @@ export default function DrawerNavigator() {
         component={QRCodeEvent}
         options={{
           title: t('drawerEvent'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="calendar-outline" color={color} size={size} />,
         }}
       />
@@ -127,7 +122,6 @@ export default function DrawerNavigator() {
         component={InstagramQRCodeScreen}
         options={{
           title: t('drawerInstagram'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="logo-instagram" color={color} size={size} />,
         }}
       />
@@ -136,7 +130,6 @@ export default function DrawerNavigator() {
         component={TelephoneQRCodeScreen}
         options={{
           title: t('drawerTelephone'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="call-outline" color={color} size={size} />,
         }}
       />
@@ -145,7 +138,6 @@ export default function DrawerNavigator() {
         component={TextQRCodeScreen}
         options={{
           title: t('drawerText'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="text-outline" color={color} size={size} />,
         }}
       />
@@ -154,7 +146,6 @@ export default function DrawerNavigator() {
         component={TwitterQRCodeScreen}
         options={{
           title: t('drawerTwitter'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="logo-twitter" color={color} size={size} />,
         }}
       />
@@ -163,7 +154,6 @@ export default function DrawerNavigator() {
         component={QRCodeWebsite}
         options={{
           title: t('drawerWebsite'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="globe-outline" color={color} size={size} />,
         }}
       />
@@ -172,7 +162,6 @@ export default function DrawerNavigator() {
         component={WhatsAppQRCodeScreen}
         options={{
           title: t('drawerWhatsApp'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="logo-whatsapp" color={color} size={size} />,
         }}
       />
@@ -181,7 +170,6 @@ export default function DrawerNavigator() {
         component={QRCodeWifi}
         options={{
           title: t('drawerWiFi'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="wifi-outline" color={color} size={size} />,
         }}
       />
@@ -190,7 +178,6 @@ export default function DrawerNavigator() {
         component={ShowQRCodeScreen}
         options={{
           title: t('drawerShowQR'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="eye-outline" color={color} size={size} />,
         }}
       />
@@ -199,7 +186,6 @@ export default function DrawerNavigator() {
         component={ResultScreen}
         options={{
           title: t('drawerOpenFile'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="document-outline" color={color} size={size} />,
         }}
       />
@@ -208,7 +194,6 @@ export default function DrawerNavigator() {
         component={LocationScreen}
         options={{
           title: t('drawerLocation'),
-          headerShown:true,
           drawerIcon: ({ color, size }) => <Ionicons name="location-outline" color={color} size={size} />,
         }}
       />
@@ -217,8 +202,7 @@ export default function DrawerNavigator() {
         component={QRDetails}
         options={{
           title: t('drawerQRDetails'),
-          headerShown:true,
-          drawerIcon: ({ color, size }) => <Ionicons name="location-outline" color={color} size={size} />,
+          drawerIcon: ({ color, size }) => <Ionicons name="desktop-outline" color={color} size={size} />,
         }}
       />
     </Drawer.Navigator>

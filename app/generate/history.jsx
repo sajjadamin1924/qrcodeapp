@@ -4,17 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  FlatList,
-  Image,
-  ImageBackground,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import FullScreenResultLayout from '../../components/FullScreenLayout';
 
 export default function HistoryScreen() {
   const [selectedTab, setSelectedTab] = useState('scan');
@@ -25,9 +16,7 @@ export default function HistoryScreen() {
   useEffect(() => {
     const loadHistory = async () => {
       const saved = await AsyncStorage.getItem('qrHistory');
-      if (saved) {
-        setHistory(JSON.parse(saved));
-      }
+      if (saved) setHistory(JSON.parse(saved));
     };
     loadHistory();
   }, []);
@@ -43,135 +32,95 @@ export default function HistoryScreen() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <StatusBar translucent backgroundColor="transparent" />
-      <ImageBackground
-        source={require('../../assets/images/background.png')}
-        style={StyleSheet.absoluteFillObject}
-        resizeMode="cover"
+    <FullScreenResultLayout>
+      {/* Header */}
+      {/* <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back" size={26} color="#FFD700" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>{t('History')}</Text>
+      </View> */}
+
+      {/* Tabs */}
+      <View style={styles.tabs}>
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === 'scan' && styles.tabButtonActive]}
+          onPress={() => setSelectedTab('scan')}
+        >
+          <Text style={selectedTab === 'scan' ? styles.tabTextActive : styles.tabText}>{t('Scan')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === 'create' && styles.tabButtonActive]}
+          onPress={() => setSelectedTab('create')}
+        >
+          <Text style={selectedTab === 'create' ? styles.tabTextActive : styles.tabText}>{t('Create')}</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* History List */}
+      <FlatList
+        data={history.filter((item) => item.type === selectedTab)}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.list}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.listItem}
+            onPress={() => navigation.navigate('QRDetails', { item })}
+            activeOpacity={0.7}
+          >
+            <Image source={require('../../assets/images/qricon.png')} style={styles.qrIcon} />
+            <View style={styles.listText}>
+              <Text style={styles.url} numberOfLines={1}>{item.url}</Text>
+              <Text style={styles.type}>{item.type.toUpperCase()}</Text>
+            </View>
+            <View style={styles.listRight}>
+              <Text style={styles.date}>{item.date}</Text>
+              <TouchableOpacity onPress={() => deleteItem(item.id)}>
+                <Ionicons name="trash" size={20} color="#FFD700" />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        )}
       />
 
-      <SafeAreaView style={styles.overlay} edges={['left', 'right', 'bottom']}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Ionicons name="chevron-back" size={26} color="#FFD700" />
-          </TouchableOpacity>
-
-          <Text style={styles.headerTitle}>{t('History')}</Text>
-
-          <Ionicons name="chevron-back" size={26} color="transparent" />
-        </View>
-
-
-        {/* Tabs */}
-        <View style={styles.tabs}>
-          <TouchableOpacity
-            style={[
-              styles.tabButton,
-              selectedTab === 'scan' && styles.tabButtonActive,
-            ]}
-            onPress={() => setSelectedTab('scan')}
-          >
-            <Text
-              style={
-                selectedTab === 'scan' ? styles.tabTextActive : styles.tabText
-              }
-            >
-              {t('Scan')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.tabButton,
-              selectedTab === 'create' && styles.tabButtonActive,
-            ]}
-            onPress={() => setSelectedTab('create')}
-          >
-            <Text
-              style={
-                selectedTab === 'create' ? styles.tabTextActive : styles.tabText
-              }>
-              {t('Create')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* History List */}
-        <FlatList
-          data={history.filter((item) => item.type === selectedTab)}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.list}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.listItem}
-              onPress={() => navigation.navigate('QRDetails', { item })}
-              activeOpacity={0.7}
-            >
-              <Image
-                source={require('../../assets/images/qricon.png')}
-                style={styles.qrIcon}
-              />
-              <View style={styles.listText}>
-                <Text style={styles.url} numberOfLines={1}>
-                  {item.url}
-                </Text>
-                <Text style={styles.type}>{item.type.toUpperCase()}</Text>
-              </View>
-              <View style={styles.listRight}>
-                <Text style={styles.date}>{item.date}</Text>
-                <TouchableOpacity onPress={() => deleteItem(item.id)}>
-                  <Ionicons name="trash" size={20} color="#FFD700" />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-        {/* Footer */}
-        <BottomNavigation />
-      </SafeAreaView>
-    </View>
+      {/* Footer */}
+      <BottomNavigation />
+    </FullScreenResultLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'space-between',
-  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 40,
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
+    marginTop: 20,
+    marginBottom: 20,
   },
   backButton: {
     backgroundColor: '#2a2a2a',
     padding: 8,
     borderRadius: 10,
+    marginRight: 10,
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#fff',
-    textAlign: 'center',
     flex: 1,
+    textAlign: 'center',
   },
   tabs: {
     flexDirection: 'row',
     backgroundColor: '#2a2a2a',
     borderRadius: 10,
     overflow: 'hidden',
-    marginHorizontal: 20,
-    marginVertical: 20,
+    marginBottom: 20,
   },
   tabButton: {
     flex: 1,
     paddingVertical: 10,
-    backgroundColor: '#2a2a2a',
     alignItems: 'center',
+    backgroundColor: '#2a2a2a',
   },
   tabButtonActive: { backgroundColor: '#FFD700' },
   tabText: { color: '#fff', fontSize: 16 },
