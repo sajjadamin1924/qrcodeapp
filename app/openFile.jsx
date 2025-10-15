@@ -1,26 +1,27 @@
+import BottomNavigation from "@/components/BottomNavigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import { Alert, Image, Share, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import FullScreenResultLayout from "../components/FullScreenLayout";
-import BottomNavigation from "@/components/BottomNavigation";
-
 export default function ResultScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const { t } = useTranslation();
   const { scannedData } = route.params || {};
-  const scannedUrl = scannedData || "No data found";
+   const scannedUrl = scannedData || t('noData');
 
   const handleCopy = () => {
     Clipboard.setStringAsync(scannedUrl);
-    Alert.alert("Copied", "Data copied to clipboard");
+    Alert.alert(t('copiedTitle'), t('copiedMessage'));
   };
 
   const handleShare = async () => {
     try {
       await Share.share({ message: scannedUrl });
     } catch (error) {
-      Alert.alert("Error", "Unable to share");
+       Alert.alert(t('errorTitle'), t('errorMessage'));
     }
   };
 
@@ -29,11 +30,11 @@ export default function ResultScreen() {
       {/* Result Card */}
       <View style={styles.resultCard}>
         <Image source={require("../assets/images/qricon.png")} style={styles.qrIcon} />
-        <Text style={styles.dataType}>Data</Text>
+         <Text style={styles.dataType}>{t('dataType')}</Text>
         <Text style={styles.timestamp}>{new Date().toLocaleString()}</Text>
         <Text style={styles.url}>{scannedUrl}</Text>
         <TouchableOpacity onPress={() => navigation.navigate("showqr", { qrValue: scannedUrl })}>
-          <Text style={styles.showQR}>Show QR Code</Text>
+           <Text style={styles.showQR}>{t('showQR')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -41,12 +42,12 @@ export default function ResultScreen() {
       <View style={styles.actions}>
         <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
           <Image source={require("../assets/images/share.png")} style={styles.actionIcon} />
-          <Text style={styles.actionText}>Share</Text>
+            <Text style={styles.actionText}>{t('share')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.actionButton} onPress={handleCopy}>
           <Image source={require("../assets/images/copy.png")} style={styles.actionIcon} />
-          <Text style={styles.actionText}>Copy</Text>
+          <Text style={styles.actionText}>{t('copy')}</Text>
         </TouchableOpacity>
       </View>
       <BottomNavigation />

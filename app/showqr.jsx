@@ -1,12 +1,12 @@
+import BottomNavigation from "@/components/BottomNavigation";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Share, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Linking, Share, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import FullScreenResultLayout from "../components/FullScreenLayout";
-import BottomNavigation from "@/components/BottomNavigation";
 
 const ShowQRCodeScreen = () => {
   const { t } = useTranslation();
@@ -45,25 +45,39 @@ const ShowQRCodeScreen = () => {
   };
 
   const isURL = value.startsWith("http://") || value.startsWith("https://");
+  const handleOpenInBrowser = async () => {
+    if (!value.startsWith("http://") && !value.startsWith("https://")) {
+      Alert.alert(t("invalidUrl"), t("thisIsNotAValidUrl"));
+      return;
+    }
+    const supported = await Linking.canOpenURL(value);
+    if (supported) {
+      await Linking.openURL(value);
+    } else {
+      Alert.alert(t("error"), t("cannotOpenUrl"));
+    }
+  };
 
   return (
     <FullScreenResultLayout>
-      
-      {/* <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-          <Ionicons name="chevron-back" size={20} color="#FFD700" />
-        </TouchableOpacity>
-        <Text style={styles.title}>{t("title")}</Text>
-      </View> */}
 
       {/* Data Section */}
       <View style={styles.resultCard}>
         <Text style={styles.dataType}>{t("dataLabel")}</Text>
         <Text style={styles.url}>{value}</Text>
       </View>
+       {/* ✅ Open in Browser (above QR) */}
+        {isURL && (
+          <View style={styles.centeredAction}>
+            <TouchableOpacity
+              style={styles.openButton}
+              onPress={handleOpenInBrowser}
+            >
+              <Ionicons name="open-outline" size={26} color="#000"  />
+            </TouchableOpacity>
+            <Text style={styles.openLabel}>{t("openInBrowser")}</Text>
+          </View>
+        )}
 
       {/* QR Code */}
       <View style={styles.qrImageContainer}>
@@ -124,4 +138,19 @@ const styles = StyleSheet.create({
     width: 100,
   },
   actionText: { marginTop: 6, fontWeight: "600", color: "#1E1E1E", fontSize: 14 },
+    centeredAction: {
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  openButton: {
+    backgroundColor: "#FFD700",
+    padding: 12,
+    borderRadius: 12,
+  },
+  openLabel: {
+    marginTop: 6,
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
+  },
 });
