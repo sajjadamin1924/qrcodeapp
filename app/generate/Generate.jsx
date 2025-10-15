@@ -1,7 +1,7 @@
 import BottomNavigation from "@/components/BottomNavigation";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { useTranslation } from "react-i18next"; // ✅ import i18n hook
+import { useTranslation } from "react-i18next";
 import {
   Dimensions,
   FlatList,
@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -31,45 +30,34 @@ const qrOptions = [
 
 export default function GenerateQrScreen() {
   const navigation = useNavigation();
-  const { t, i18n } = useTranslation(); // ✅ translation hook
+  const { t } = useTranslation();
 
-  const scheme = useColorScheme();
-  const backgroundColor = scheme === "dark" ? "#121212" : "#FDFDFD";
-  const cardColor = scheme === "dark" ? "#1E1E1E" : "#FFFFFF";
-  const accent = "#FDB623";
-  const textColor = scheme === "dark" ? "#FFFFFF" : "#000000";
+  const renderItem = ({ item }) => {
+    const translationKey =
+      item.label.toLowerCase() === "wi-fi" ? "wifi" : item.label.toLowerCase();
 
- const renderItem = ({ item }) => {
-  const translationKey =
-    item.label.toLowerCase() === "wi-fi" ? "wifi" : item.label.toLowerCase();
-
-  return (
-    <TouchableOpacity
-      style={[styles.card, { backgroundColor: cardColor, borderColor: accent }]}
-      onPress={() => {
-        
-
-        let route = item.label.toLowerCase();
-        if (item.label === "Wi-Fi") route = "wifi";
-        navigation.navigate(route);
-      }}
-    >
-      <Image source={item.icon} style={styles.icon} />
-      <View style={styles.labelWrapper}>
-        <Text style={[styles.label, { color: textColor }]}>
-          {t(translationKey)}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
+    return (
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => {
+          let route = item.label.toLowerCase();
+          if (item.label === "Wi-Fi") route = "wifi";
+          navigation.navigate(route);
+        }}
+      >
+        <Image source={item.icon} style={styles.icon} />
+        <View style={styles.labelWrapper}>
+          <Text style={styles.label}>{t(translationKey)}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor }]}>
+    <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.title, { color: textColor }]}>{t("generate")}</Text>
+        <Text style={styles.title}>{t("generate")}</Text>
       </View>
 
       {/* Grid */}
@@ -92,25 +80,39 @@ const { width } = Dimensions.get("window");
 const cardSize = width / 3 - 24;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
+  container: {
+    flex: 1,
+    backgroundColor: "#1E1E1E", // fixed dark background
+    padding: 20,
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
   },
-  title: { fontSize: 22, fontWeight: "bold" },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+  },
   grid: { paddingBottom: 100 },
   card: {
     width: cardSize,
     height: cardSize,
     marginBottom: 25,
-    borderRadius: 6,
+    borderRadius: 8,
     borderWidth: 2,
+    borderColor: "#FDB623",
+    backgroundColor: "#2A2A2A",
     justifyContent: "center",
     alignItems: "center",
   },
-  icon: { width: 56, height: 56, resizeMode: "contain" },
+  icon: {
+    width: 56,
+    height: 56,
+    resizeMode: "contain",
+  },
   labelWrapper: {
     position: "absolute",
     bottom: -12,
@@ -118,13 +120,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#FDB623",
     paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: 2,
+    borderRadius: 4,
     elevation: 3,
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
-  label: { fontSize: 13, fontWeight: "600" },
-  
-
+  label: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#000",
+  },
 });

@@ -1,18 +1,11 @@
-import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    ImageBackground,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import uuid from 'react-native-uuid';
+import QRCodeScreenLayout from '../../components/QRCodeScreenLayout';
 
 export default function QRDetails() {
   const navigation = useNavigation();
@@ -45,7 +38,7 @@ export default function QRDetails() {
       const history = saved ? JSON.parse(saved) : [];
 
       const exists = history.some((h) => h.url === item.url);
-      if (exists) return; // avoid duplicates silently
+      if (exists) return;
 
       const newEntry = {
         id: uuid.v4().toString(),
@@ -62,7 +55,6 @@ export default function QRDetails() {
     }
   };
 
-  // 🔍 Parse vCard content into readable fields
   const parseVCard = (data) => {
     const lines = data.split('\n');
     const result = {};
@@ -88,115 +80,51 @@ export default function QRDetails() {
   }
 
   return (
-    <ImageBackground
-      source={require('../../assets/images/background.png')}
-      style={styles.background}
-      resizeMode="cover"
+    <QRCodeScreenLayout
+      title={t('drawerQRDetails')}
+      iconSource={require('../../assets/images/background.png')}
     >
-      <View style={styles.overlay}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Ionicons name="chevron-back" size={28} color="#FFD700" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>{t('drawerQRDetails')}</Text>
-          <View style={{ width: 28 }} />
+      <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+        <QRCode value={item.url} size={220} color="#000" backgroundColor="#fff" />
+
+        <View style={styles.details}>
+          <Text style={styles.label}>{t('type')}:</Text>
+          <Text style={styles.value}>{item.type?.toUpperCase()}</Text>
+
+          <Text style={styles.label}>{t('date')}:</Text>
+          <Text style={styles.value}>{item.date}</Text>
+
+          <Text style={styles.label}>{t('content')}:</Text>
+          {parsedData ? (
+            <>
+              {parsedData.fullName && <Text style={styles.value}>👤 {parsedData.fullName}</Text>}
+              {parsedData.company && <Text style={styles.value}>🏢 {parsedData.company}</Text>}
+              {parsedData.job && <Text style={styles.value}>💼 {parsedData.job}</Text>}
+              {parsedData.phone && <Text style={styles.value}>📞 {parsedData.phone}</Text>}
+              {parsedData.email && <Text style={styles.value}>📧 {parsedData.email}</Text>}
+              {parsedData.website && <Text style={styles.value}>🌐 {parsedData.website}</Text>}
+              {parsedData.address && <Text style={styles.value}>📍 {parsedData.address}</Text>}
+            </>
+          ) : (
+            <Text style={styles.value} numberOfLines={3}>{item.url}</Text>
+          )}
         </View>
 
-        <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-          <View style={styles.card}>
-            <QRCode value={item.url} size={220} color="#000" backgroundColor="#fff" />
-
-            <View style={styles.details}>
-              <Text style={styles.label}>{t('type')}:</Text>
-              <Text style={styles.value}>{item.type?.toUpperCase()}</Text>
-
-              <Text style={styles.label}>{t('date')}:</Text>
-              <Text style={styles.value}>{item.date}</Text>
-
-              <Text style={styles.label}>{t('content')}:</Text>
-              {parsedData ? (
-                <>
-                  {parsedData.fullName && (
-                    <Text style={styles.value}>👤 {parsedData.fullName}</Text>
-                  )}
-                  {parsedData.company && (
-                    <Text style={styles.value}>🏢 {parsedData.company}</Text>
-                  )}
-                  {parsedData.job && <Text style={styles.value}>💼 {parsedData.job}</Text>}
-                  {parsedData.phone && (
-                    <Text style={styles.value}>📞 {parsedData.phone}</Text>
-                  )}
-                  {parsedData.email && (
-                    <Text style={styles.value}>📧 {parsedData.email}</Text>
-                  )}
-                  {parsedData.website && (
-                    <Text style={styles.value}>🌐 {parsedData.website}</Text>
-                  )}
-                  {parsedData.address && (
-                    <Text style={styles.value}>📍 {parsedData.address}</Text>
-                  )}
-                </>
-              ) : (
-                <Text style={styles.value} numberOfLines={3}>
-                  {item.url}
-                </Text>
-              )}
-            </View>
-
-            <TouchableOpacity
-              style={[styles.saveButton, isSaved && styles.savedButton]}
-              onPress={handleSave}
-              disabled={isSaved}
-            >
-              <Text style={styles.saveButtonText}>
-                {isSaved ? t('saved') : t('save')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
-    </ImageBackground>
+        <TouchableOpacity
+          style={[styles.saveButton, isSaved && styles.savedButton]}
+          onPress={handleSave}
+          disabled={isSaved}
+        >
+          <Text style={styles.saveButtonText}>
+            {isSaved ? t('saved') : t('save')}
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </QRCodeScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  background: { flex: 1, width: '100%', height: '100%' },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(30,30,30,0.6)',
-    paddingTop: 50,
-    paddingHorizontal: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 40,
-    marginBottom: 40,
-    justifyContent: 'space-between',
-  },
-  backButton: {
-    backgroundColor: '#2A2A2A',
-    padding: 8,
-    borderRadius: 10,
-  },
-  headerTitle: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    flex: 1,
-  },
-  card: {
-    backgroundColor: '#2A2A2A',
-    borderRadius: 10,
-    padding: 25,
-    alignItems: 'center',
-    elevation: 6,
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    borderColor: '#FFD700',
-  },
   details: {
     marginTop: 25,
     width: '100%',
@@ -205,15 +133,16 @@ const styles = StyleSheet.create({
   value: { color: '#fff', fontSize: 16, marginTop: 2 },
   saveButton: {
     marginTop: 25,
-    backgroundColor: '#FFD700',
+    backgroundColor: '#FDB623',
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 25,
+    alignSelf: 'center',
   },
   savedButton: {
     backgroundColor: '#777',
   },
-  saveButtonText: { color: '#000', fontSize: 16, fontWeight: 'bold' },
+  saveButtonText: { color: '#1E1E1E', fontSize: 16, fontWeight: 'bold' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   errorText: { color: '#fff', fontSize: 18 },
 });
