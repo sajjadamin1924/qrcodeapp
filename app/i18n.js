@@ -41,8 +41,6 @@ const resources = {
       "drawerOpenFile": "Open File",
       "drawerLocation": "Location",
       "drawerQRDetails": "QRDetails",
-
-      // Common QR Types
       "text": "Text",
       "website": "Website",
       "wifi": "Wi-Fi",
@@ -216,10 +214,10 @@ const resources = {
       "enterWebsiteAlert": "Please enter a valid website URL",
       "locationNotFound": "please allow location",
       "locationPermissionAlert": "Location permission is required to generate a QR code.",
-  "currentLocation": "Current Location",
-  "latitude": "Latitude",
-  "longitude": "Longitude",
-  "fetchingLocation": "Fetching location..."
+      "currentLocation": "Current Location",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "fetchingLocation": "Fetching location..."
     },
   },
   enGB: {
@@ -442,10 +440,10 @@ const resources = {
     "enterWebsiteAlert": "Please enter a valid website URL",
     "locationNotFound": "Please allow location",
     "locationPermissionAlert": "Location permission is required to generate a QR code.",
-  "currentLocation": "Current Location",
-  "latitude": "Latitude",
-  "longitude": "Longitude",
-  "fetchingLocation": "Fetching location..."
+    "currentLocation": "Current Location",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "fetchingLocation": "Fetching location..."
   }
 },
 frFR: {
@@ -668,10 +666,10 @@ frFR: {
     "enterWebsiteAlert": "Veuillez entrer une URL de site web valide",
     "locationNotFound": "Veuillez autoriser la localisation",
     "locationPermissionAlert": "La permission de localisation est requise pour générer un code QR.",
-  "currentLocation": "Localisation actuelle",
-  "latitude": "Latitude",
-  "longitude": "Longitude",
-  "fetchingLocation": "Récupération de la localisation..."
+    "currentLocation": "Localisation actuelle",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "fetchingLocation": "Récupération de la localisation..."
   }
 },
 
@@ -895,10 +893,10 @@ deDE: {
       "enterWebsiteAlert": "Bitte geben Sie eine gültige Webseiten-URL ein",
       "locationNotFound": "Bitte erlauben Sie den Standortzugriff",
       "locationPermissionAlert": "Standortberechtigung ist erforderlich, um einen QR-Code zu generieren.",
-  "currentLocation": "Aktueller Standort",
-  "latitude": "Breitengrad",
-  "longitude": "Längengrad",
-  "fetchingLocation": "Standort wird abgerufen..."
+      "currentLocation": "Aktueller Standort",
+      "latitude": "Breitengrad",
+      "longitude": "Längengrad",
+      "fetchingLocation": "Standort wird abgerufen..."
     }
   },
   
@@ -1122,10 +1120,10 @@ jaJP: {
       "enterWebsiteAlert": "有効なウェブサイトのURLを入力してください",
       "locationNotFound": "位置情報を許可してください",
       "locationPermissionAlert": "QRコードを生成するには位置情報の許可が必要です。",
-  "currentLocation": "現在の位置",
-  "latitude": "緯度",
-  "longitude": "経度",
-  "fetchingLocation": "位置情報を取得中..."
+      "currentLocation": "現在の位置",
+      "latitude": "緯度",
+      "longitude": "経度",
+      "fetchingLocation": "位置情報を取得中..."
     }
 },
 
@@ -1349,10 +1347,10 @@ jaJP: {
       "enterWebsiteAlert": "유효한 웹사이트 URL을 입력하세요",
       "locationNotFound": "위치를 허용해주세요",
       "locationPermissionAlert": "QR 코드를 생성하려면 위치 권한이 필요합니다.",
-  "currentLocation": "현재 위치",
-  "latitude": "위도",
-  "longitude": "경도",
-  "fetchingLocation": "위치 가져오는 중..."
+      "currentLocation": "현재 위치",
+      "latitude": "위도",
+      "longitude": "경도",
+      "fetchingLocation": "위치 가져오는 중..."
     }
   },
   
@@ -1576,10 +1574,10 @@ jaJP: {
       "enterWebsiteAlert": "Por favor, insira um URL de website válido",
       "locationNotFound": "Por favor, permita a localização",
       "locationPermissionAlert": "É necessária a permissão de localização para gerar um código QR.",
-  "currentLocation": "Localização atual",
-  "latitude": "Latitude",
-  "longitude": "Longitude",
-  "fetchingLocation": "A obter localização..."
+      "currentLocation": "Localização atual",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "fetchingLocation": "A obter localização..."
     }
   },
   
@@ -1803,10 +1801,10 @@ jaJP: {
       "enterWebsiteAlert": "Por favor, introduce una URL de sitio web válida",
       "locationNotFound": "Por favor, permite la ubicación",
       "locationPermissionAlert": "Se requiere el permiso de ubicación para generar un código QR.",
-  "currentLocation": "Ubicación actual",
-  "latitude": "Latitud",
-  "longitude": "Longitud",
-  "fetchingLocation": "Obteniendo ubicación..."
+      "currentLocation": "Ubicación actual",
+      "latitude": "Latitud",
+      "longitude": "Longitud",
+      "fetchingLocation": "Obteniendo ubicación..."
     }
   },
   
@@ -2030,10 +2028,10 @@ jaJP: {
       "enterWebsiteAlert": "请输入有效的网站URL",
       "locationNotFound": "请允许位置访问",
       "locationPermissionAlert": "生成二维码需要位置权限。",
-  "currentLocation": "当前位置",
-  "latitude": "纬度",
-  "longitude": "经度",
-  "fetchingLocation": "正在获取位置..."
+      "currentLocation": "当前位置",
+      "latitude": "纬度",
+      "longitude": "经度",
+      "fetchingLocation": "正在获取位置..."
     }
   },
   
@@ -2499,7 +2497,6 @@ jaJP: {
 
   arAR: {
     translation: {
-      // General
       "welcome": "مرحباً",
       "selectLanguage": "اختر لغتك",
       "continue": "متابعة",
@@ -2508,8 +2505,6 @@ jaJP: {
       "scanning": "جارٍ المسح...",
       "noCamera": "لا يوجد وصول إلى الكاميرا",
       "requestingCamera": "جارٍ طلب إذن الكاميرا...",
-
-      // Permissions
       "permissionsTitle": "أذونات التطبيق",
       "permissionsSubtitle": "نحتاج إلى بعض الأذونات لجعل QR Maker يعمل بشكل مثالي.",
       "grantCamera": "منح الوصول إلى الكاميرا",
@@ -2520,7 +2515,6 @@ jaJP: {
       "notificationsGranted": "تم منح الإشعارات",
       "redirectInfo": "سيتم إعادة توجيهك تلقائيًا بمجرد منح جميع الأذونات.",
 
-      // Drawer
       "drawerHome": "الرئيسية",
       "drawerGenerate": "إنشاء",
       "drawerScanner": "الماسح",
@@ -2542,7 +2536,7 @@ jaJP: {
       "drawerLocation": "الموقع",
       "drawerQRDetails": "تفاصيل QR",
 
-      // Common QR Types
+      
       "text": "النص",
       "website": "الموقع الإلكتروني",
       "wifi": "واي فاي",
