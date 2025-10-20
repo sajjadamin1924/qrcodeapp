@@ -2,13 +2,28 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import i18n from "../i18n";
 
 const languages = [
-  { id: "en", name: "English", flag: "🇬🇧" },
-  { id: "ur", name: "Urdu", flag: "🇵🇰" },
-  { id: "ar", name: "Arabic", flag: "🇸🇦" },
+  { id: "enUS", name: "English (US)", flag: "🇺🇸" },
+  { id: "enGB", name: "English (UK)", flag: "🇬🇧" },
+  { id: "urUR", name: "Urdu", flag: "🇵🇰" },
+  { id: "frFR", name: "French", flag: "🇫🇷" },
+  { id: "deDE", name: "German", flag: "🇩🇪" },
+  { id: "jaJP", name: "Japanese", flag: "🇯🇵" },
+  { id: "koKR", name: "Korean", flag: "🇰🇷" },
+  { id: "ptPT", name: "Portuguese", flag: "🇵🇹" },
+  { id: "esES", name: "Spanish", flag: "🇪🇸" },
+  { id: "arAR", name: "Arabic", flag: "🇸🇦" },
+  { id: "zhCN", name: "Chinese", flag: "🇨🇳" },
+  { id: "itIT", name: "Italian", flag: "🇮🇹" },
 ];
 
 export default function LanguageScreen() {
@@ -18,7 +33,7 @@ export default function LanguageScreen() {
 
   const handleSelect = (langId) => {
     setSelected(langId);
-    i18n.changeLanguage(langId); // 👈 This changes the app language immediately
+    i18n.changeLanguage(langId);
   };
 
   const handleContinue = () => {
@@ -28,31 +43,45 @@ export default function LanguageScreen() {
   };
 
   return (
-    <LinearGradient colors={["#0f0f1f", "#141432", "#1a1a40"]} style={styles.container}>
+    <LinearGradient
+      colors={["#0f0f1f", "#141432", "#1a1a40"]}
+      style={styles.container}
+    >
       <Text style={styles.title}>{t("selectLanguage")}</Text>
 
       <FlatList
         data={languages}
-        numColumns={2}
-        columnWrapperStyle={{ justifyContent: "space-around" }}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[
-              styles.card,
-              selected === item.id && styles.selectedCard,
+              styles.listItem,
+              selected === item.id && styles.selectedListItem,
             ]}
             onPress={() => handleSelect(item.id)}
             activeOpacity={0.8}
           >
-            <Text style={styles.flag}>{item.flag}</Text>
-            <Text style={styles.langText}>{item.name}</Text>
+            <View style={styles.flagContainer}>
+              <Text style={styles.flag}>{item.flag}</Text>
+            </View>
+            <Text
+              style={[
+                styles.langText,
+                selected === item.id && styles.selectedLangText,
+              ]}
+            >
+              {item.name}
+            </Text>
           </TouchableOpacity>
         )}
+        contentContainerStyle={styles.listContainer}
       />
 
       {selected && (
-        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
+        <TouchableOpacity
+          style={styles.continueButton}
+          onPress={handleContinue}
+        >
           <Text style={styles.continueText}>{t("continue")}</Text>
         </TouchableOpacity>
       )}
@@ -63,8 +92,8 @@ export default function LanguageScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
+    paddingTop: 80,
   },
   title: {
     fontSize: 26,
@@ -73,40 +102,48 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 40,
   },
-  card: {
+  listContainer: {
+    paddingBottom: 100,
+  },
+  listItem: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#1f1f3f",
-    borderRadius: 20,
-    width: 140,
-    height: 140,
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    marginBottom: 15,
+    elevation: 4,
+  },
+  selectedListItem: {
+    borderColor: "#00f0ff",
+    borderWidth: 2,
+    backgroundColor: "#22224f",
+    shadowColor: "#00f0ff",
+    shadowOpacity: 0.6,
+  },
+  flagContainer: {
+    width: 40,
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 15,
-    elevation: 10,
-    shadowColor: "#00f0ff",
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    transform: [{ rotateY: "8deg" }],
-  },
-  selectedCard: {
-    borderWidth: 2,
-    borderColor: "#00f0ff",
-    shadowColor: "#00ffff",
-    shadowOpacity: 0.8,
-    transform: [{ scale: 1.05 }, { rotateY: "0deg" }],
   },
   flag: {
-    fontSize: 40,
+    fontSize: 28,
   },
   langText: {
     color: "#fff",
     fontSize: 18,
-    marginTop: 10,
+    marginLeft: 12,
+  },
+  selectedLangText: {
+    color: "#00f0ff",
+    fontWeight: "600",
   },
   continueButton: {
     backgroundColor: "#00f0ff",
     borderRadius: 30,
     paddingVertical: 14,
-    marginTop: 30,
+    marginTop: 20,
     marginHorizontal: 60,
     elevation: 6,
   },
