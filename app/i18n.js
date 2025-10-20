@@ -4,7 +4,6 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   enUS: {
     translation: {
-      // General
       "welcome": "Welcome",
       "selectLanguage": "Select Your Language",
       "continue": "Continue",
@@ -13,8 +12,6 @@ const resources = {
       "scanning": "Scanning...",
       "noCamera": "No access to camera",
       "requestingCamera": "Requesting camera permission...",
-
-      // Permissions
       "permissionsTitle": "App Permissions",
       "permissionsSubtitle": "We need a few permissions to make QR Maker work perfectly.",
       "grantCamera": "Grant Camera Access",
@@ -24,8 +21,6 @@ const resources = {
       "grantNotifications": "Grant Notifications",
       "notificationsGranted": "Notifications Granted",
       "redirectInfo": "You’ll be redirected automatically once all permissions are granted.",
-
-      // Drawer
       "drawerHome": "Home",
       "drawerGenerate": "Generate",
       "drawerScanner": "Scanner",
@@ -107,8 +102,6 @@ const resources = {
       "enterEmail": "Enter your email address",
       "scanThisQrEmail": "Scan this QR to get the email address",
 
-
-      // Event Screen Translations
       "event": "Event",
       "eventName": "Event Name",
       "enterEventName": "Enter event name",

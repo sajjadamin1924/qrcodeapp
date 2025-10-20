@@ -27,7 +27,6 @@ const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   return (
-   
       <Stack.Navigator
         initialRouteName="Welcome"
         screenOptions={{
