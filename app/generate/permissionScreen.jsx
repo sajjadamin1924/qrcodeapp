@@ -74,7 +74,7 @@ export default function PermissionScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
   image: { width: 200, height: 200, resizeMode: "contain", marginBottom: 20 },
-  title: { fontSize: 26, color: "#fff", fontWeight: "bold", marginBottom: 8 },
+  title: { fontSize: 26, color: "#fff", fontWeight: "bold", marginBottom: 8, textAlign:"center" },
   subtitle: { color: "#aaa", textAlign: "center", marginBottom: 30, fontSize: 15 },
   button: {
     backgroundColor: "#FDB623",
