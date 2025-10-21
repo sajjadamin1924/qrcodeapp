@@ -34,7 +34,7 @@ export default function TextQRCodeScreen() {
   return (
     <QRCodeScreenLayout
       title={t("text")}
-      iconSource={require("../../assets/images/Vector.png")}
+      iconSource={require("../../assets/images/vector.png")}
     >
       <Text style={styles.label}>{t("enterText")}</Text>
       <TextInput

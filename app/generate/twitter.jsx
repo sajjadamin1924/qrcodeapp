@@ -28,7 +28,7 @@ export default function TwitterQRCodeScreen() {
   return (
     <QRCodeScreenLayout
       title={t("twitter")}
-      iconSource={require("../../assets/images/Vector.png")}
+      iconSource={require("../../assets/images/vector.png")}
     >
       {/* Input Field */}
       <Text style={styles.label}>{t("username")}</Text>
