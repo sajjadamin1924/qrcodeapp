@@ -1,8 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import ArabicLanguageScreen from '../generate/ArabicLanguageScreen';
 import QRCodeBusiness from '../generate/business';
 import QRCodeContact from '../generate/contact';
 import EmailScreen from '../generate/email';
+import EnglishLanguageScreen from '../generate/EnglishLanguageScreen';
 import QRCodeEvent from '../generate/event';
 import GenerateQrScreen from '../generate/Generate';
 import HistoryScreen from '../generate/history';
@@ -36,6 +38,8 @@ const AppNavigator = () => {
       >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Language" component={LanguageScreen} />
+        <Stack.Screen name="EnglishLanguageScreen" component={EnglishLanguageScreen} />
+        <Stack.Screen name="ArabicLanguageScreen" component={ArabicLanguageScreen} />
         <Stack.Screen name="Permission" component={PermissionScreen} />
         <Stack.Screen name="MainApp" component={DrawerNavigator} />
         <Stack.Screen name="generate" component={GenerateQrScreen} />

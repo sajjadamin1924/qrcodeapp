@@ -10,49 +10,38 @@ import {
 } from "react-native";
 import i18n from "../i18n";
 
-const languages = [
-  { id: "en", name: "English", flag: "🌐" },
-  { id: "ar", name: "Arabic", flag: "🇸🇦" },
-  { id: "urUR", name: "Urdu", flag: "🇵🇰" },
-  { id: "frFR", name: "French", flag: "🇫🇷" },
-  { id: "deDE", name: "German", flag: "🇩🇪" },
-  { id: "jaJP", name: "Japanese", flag: "🇯🇵" },
-  { id: "koKR", name: "Korean", flag: "🇰🇷" },
-  { id: "ptPT", name: "Portuguese", flag: "🇵🇹" },
-  { id: "esES", name: "Spanish", flag: "🇪🇸" },
-  { id: "zhCN", name: "Chinese", flag: "🇨🇳" },
-  { id: "itIT", name: "Italian", flag: "🇮🇹" },
+const englishVariants = [
+  { id: "enUS", name: "English (US)", flag: "🇺🇸" },
+  { id: "enGB", name: "English (UK)", flag: "🇬🇧" },
+  { id: "enAU", name: "English (Australia)", flag: "🇦🇺" },
+  { id: "enCA", name: "English (Canada)", flag: "🇨🇦" },
+  { id: "enIN", name: "English (India)", flag: "🇮🇳" },
+  { id: "enZA", name: "English (South Africa)", flag: "🇿🇦" },
 ];
 
-export default function LanguageScreen() {
+export default function EnglishLanguageScreen() {
   const [selected, setSelected] = useState(null);
   const navigation = useNavigation();
   const { t } = useTranslation();
 
   const handleSelect = (langId) => {
     setSelected(langId);
-    if (langId === "en") {
-      navigation.navigate("EnglishLanguageScreen");
-    } else if (langId === "ar") {
-      navigation.navigate("ArabicLanguageScreen");
-    } else {
-      i18n.changeLanguage(langId, (err) => {
-        if (err) {
-          console.error("Error changing language:", err);
-        } else {
-          console.log("Language changed to:", langId);
-          navigation.navigate("Permission");
-        }
-      });
-    }
+    i18n.changeLanguage(langId, (err) => {
+      if (err) {
+        console.error("Error changing language:", err);
+      } else {
+        console.log("Language changed to:", langId);
+        navigation.navigate("Permission");
+      }
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{t("selectLanguage")}</Text>
+      <Text style={styles.title}>{t("selectEnglishVariant")}</Text>
 
       <FlatList
-        data={languages}
+        data={englishVariants}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -70,7 +59,6 @@ export default function LanguageScreen() {
               style={[
                 styles.langText,
                 selected === item.id && styles.selectedLangText,
-                item.id === "ar" && styles.arabicText,
               ]}
             >
               {item.name}
@@ -86,14 +74,14 @@ export default function LanguageScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#1E1E1E", // Match TextQRCodeScreen.js and LanguageScreen.js
     paddingHorizontal: 24,
     paddingTop: 80,
   },
   title: {
     fontSize: 26,
     textAlign: "center",
-    color: "#FFFFFF",
+    color: "#FFFFFF", // Match TextQRCodeScreen.js
     fontWeight: "bold",
     marginBottom: 40,
   },
@@ -103,15 +91,15 @@ const styles = StyleSheet.create({
   listItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FDB623",
-    borderRadius: 8,
+    backgroundColor: "#FDB623", 
+    borderRadius: 8, 
     paddingVertical: 14,
     paddingHorizontal: 20,
     marginBottom: 15,
     elevation: 4,
   },
   selectedListItem: {
-    borderColor: "#FFFFFF",
+    borderColor: "#FFFFFF", 
     borderWidth: 2,
     backgroundColor: "#1DB954",
     shadowColor: "#FDB623",
@@ -126,16 +114,12 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   langText: {
-    color: "#FFFFFF",
-    fontSize: 15,
+    color: "#FFFFFF", 
+    fontSize: 15, 
     marginLeft: 12,
   },
-  arabicText: {
-    fontFamily: "Amiri-Regular",
-    textAlign: "right",
-  },
   selectedLangText: {
-    color: "#FFFFFF",
-    fontWeight: "bold",
+    color: "#FFFFFF", 
+    fontWeight: "bold", 
   },
 });

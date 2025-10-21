@@ -10,57 +10,45 @@ import {
 } from "react-native";
 import i18n from "../i18n";
 
-const languages = [
-  { id: "en", name: "English", flag: "🌐" },
-  { id: "ar", name: "Arabic", flag: "🇸🇦" },
-  { id: "urUR", name: "Urdu", flag: "🇵🇰" },
-  { id: "frFR", name: "French", flag: "🇫🇷" },
-  { id: "deDE", name: "German", flag: "🇩🇪" },
-  { id: "jaJP", name: "Japanese", flag: "🇯🇵" },
-  { id: "koKR", name: "Korean", flag: "🇰🇷" },
-  { id: "ptPT", name: "Portuguese", flag: "🇵🇹" },
-  { id: "esES", name: "Spanish", flag: "🇪🇸" },
-  { id: "zhCN", name: "Chinese", flag: "🇨🇳" },
-  { id: "itIT", name: "Italian", flag: "🇮🇹" },
+const arabicVariants = [
+  { countryId: "SA", name: "العربية (المملكة العربية السعودية)", flag: "🇸🇦" },
+  { countryId: "EG", name: "العربية (مصر)", flag: "🇪🇬" },
+  { countryId: "AE", name: "العربية (الإمارات العربية المتحدة)", flag: "🇦🇪" },
+  { countryId: "MA", name: "العربية (المغرب)", flag: "🇲🇦" },
+  { countryId: "DZ", name: "العربية (الجزائر)", flag: "🇩🇿" },
 ];
 
-export default function LanguageScreen() {
+export default function ArabicLanguageScreen() {
   const [selected, setSelected] = useState(null);
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  const handleSelect = (langId) => {
-    setSelected(langId);
-    if (langId === "en") {
-      navigation.navigate("EnglishLanguageScreen");
-    } else if (langId === "ar") {
-      navigation.navigate("ArabicLanguageScreen");
-    } else {
-      i18n.changeLanguage(langId, (err) => {
-        if (err) {
-          console.error("Error changing language:", err);
-        } else {
-          console.log("Language changed to:", langId);
-          navigation.navigate("Permission");
-        }
-      });
-    }
+  const handleSelect = (countryId) => {
+    setSelected(countryId);
+    i18n.changeLanguage("ar", (err) => {
+      if (err) {
+        console.error("Error changing language to ar:", err);
+      } else {
+        console.log("Language changed to: ar");
+        navigation.navigate("Permission");
+      }
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{t("selectLanguage")}</Text>
+      <Text style={styles.title}>{t("selectArabicVariant")}</Text>
 
       <FlatList
-        data={languages}
-        keyExtractor={(item) => item.id}
+        data={arabicVariants}
+        keyExtractor={(item) => item.countryId}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[
               styles.listItem,
-              selected === item.id && styles.selectedListItem,
+              selected === item.countryId && styles.selectedListItem,
             ]}
-            onPress={() => handleSelect(item.id)}
+            onPress={() => handleSelect(item.countryId)}
             activeOpacity={0.8}
           >
             <View style={styles.flagContainer}>
@@ -69,8 +57,8 @@ export default function LanguageScreen() {
             <Text
               style={[
                 styles.langText,
-                selected === item.id && styles.selectedLangText,
-                item.id === "ar" && styles.arabicText,
+                selected === item.countryId && styles.selectedLangText,
+                styles.arabicText,
               ]}
             >
               {item.name}
@@ -86,32 +74,35 @@ export default function LanguageScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#1E1E1E", 
     paddingHorizontal: 24,
     paddingTop: 80,
+    direction: "rtl",
   },
   title: {
     fontSize: 26,
     textAlign: "center",
-    color: "#FFFFFF",
+    color: "#FFFFFF", 
     fontWeight: "bold",
     marginBottom: 40,
+    fontFamily: "Amiri-Regular",
+    direction: "rtl",
   },
   listContainer: {
     paddingBottom: 100,
   },
   listItem: {
-    flexDirection: "row",
+    flexDirection: "row-reverse", 
     alignItems: "center",
-    backgroundColor: "#FDB623",
-    borderRadius: 8,
+    backgroundColor: "#FDB623", 
+    borderRadius: 8, 
     paddingVertical: 14,
     paddingHorizontal: 20,
     marginBottom: 15,
     elevation: 4,
   },
   selectedListItem: {
-    borderColor: "#FFFFFF",
+    borderColor: "#FDB623", 
     borderWidth: 2,
     backgroundColor: "#1DB954",
     shadowColor: "#FDB623",
@@ -126,9 +117,9 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   langText: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    marginLeft: 12,
+    color: "#FFFFFF", 
+    fontSize: 15, 
+    marginRight: 12,
   },
   arabicText: {
     fontFamily: "Amiri-Regular",
@@ -136,6 +127,6 @@ const styles = StyleSheet.create({
   },
   selectedLangText: {
     color: "#FFFFFF",
-    fontWeight: "bold",
+    fontWeight: "bold", 
   },
 });
