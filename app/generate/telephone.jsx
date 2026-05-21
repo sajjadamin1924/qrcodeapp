@@ -15,7 +15,7 @@ export default function TelephoneQRCodeScreen() {
 
   const handleGenerateQRCode = () => {
     if (!number.trim()) {
-      Alert.alert(t('Error'), t('Please enter a valid phone number'));
+      Alert.alert(t('error'), t('phone_number_required'));
       return;
     }
 
@@ -31,10 +31,10 @@ export default function TelephoneQRCodeScreen() {
       iconSource={require('../../assets/images/phone.png')}
     >
       {/* Input Field */}
-      <Text style={styles.label}>{t('phoneNumber')}</Text>
+      <Text style={styles.label}>{t('phone_number')}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t('enterPhonePlaceholder')}
+        placeholder={t('enter_phone_number')}
         placeholderTextColor="#999"
         keyboardType="phone-pad"
         value={number}
@@ -43,14 +43,14 @@ export default function TelephoneQRCodeScreen() {
 
       {/* Generate Button */}
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t('generateQrCode')}</Text>
+        <Text style={styles.buttonText}>{t('generate_qr')}</Text>
       </TouchableOpacity>
 
       {/* QR Preview */}
       {qrValue && (
         <View style={styles.qrSection}>
           <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrLabel}>{t('scanToCall')}</Text>
+          <Text style={styles.qrLabel}>{t('scan_to_call')}</Text>
         </View>
       )}
     </QRCodeScreenLayout>

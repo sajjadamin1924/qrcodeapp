@@ -15,7 +15,7 @@ export default function WebsiteQRCodeScreen() {
 
   const handleGenerateQRCode = () => {
     if (!url.trim()) {
-      Alert.alert(t("Error"), t("enterWebsiteAlert"));
+      Alert.alert(t("error"), t("website_url_required"));
       return;
     }
 
@@ -35,10 +35,10 @@ export default function WebsiteQRCodeScreen() {
       iconSource={require("../../assets/images/website.png")}
     >
       {/* Input Field */}
-      <Text style={styles.label}>{t("websiteURL")}</Text>
+      <Text style={styles.label}>{t("website_url")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterWebsitePlaceholder")}
+        placeholder={t("website_placeholder")}
         placeholderTextColor="#999"
         value={url}
         onChangeText={setUrl}
@@ -48,14 +48,14 @@ export default function WebsiteQRCodeScreen() {
 
       {/* Generate Button */}
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t("generateQrCode")}</Text>
+        <Text style={styles.buttonText}>{t("generate_qr")}</Text>
       </TouchableOpacity>
 
       {/* QR Preview */}
       {qrValue && (
         <View style={styles.qrSection}>
           <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrLabel}>{t("scanToVisitWebsite")}</Text>
+          <Text style={styles.qrLabel}>{t("scan_to_visit_website")}</Text>
         </View>
       )}
     </QRCodeScreenLayout>

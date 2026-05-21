@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
-import QRCodeScreenLayout from "../../components/QRCodeScreenLayout"; // 👈 Shared layout
+import QRCodeScreenLayout from "../../components/QRCodeScreenLayout";
 import { useQRCodeHistory } from "../hooks/UseQRCodeHistory";
 
 export default function TwitterQRCodeScreen() {
@@ -15,10 +15,9 @@ export default function TwitterQRCodeScreen() {
 
   const handleGenerateQRCode = () => {
     if (!username.trim()) {
-      Alert.alert(t("Error"), t("Please enter a valid Twitter username"));
+      Alert.alert(t("error"), t("twitter_username_required"));
       return;
     }
-
     const value = `https://twitter.com/${username.trim()}`;
     setQrValue(value);
     saveCreateToHistory(value);
@@ -26,74 +25,101 @@ export default function TwitterQRCodeScreen() {
   };
 
   return (
-    <QRCodeScreenLayout
-      title={t("twitter")}
-      iconSource={require("../../assets/images/vector.png")}
-    >
-      {/* Input Field */}
+    <QRCodeScreenLayout title={t("twitter")} iconSource={require("../../assets/images/Vector.png")}>
       <Text style={styles.label}>{t("username")}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={t("enterTwitterUsername")}
-        placeholderTextColor="#999"
-        value={username}
-        onChangeText={setUsername}
-        autoCapitalize="none"
-      />
+      <View style={styles.inputRow}>
+        <Text style={styles.prefix}>@</Text>
+        <TextInput
+          style={styles.input}
+          placeholder={t("enter_twitter_username")}
+          placeholderTextColor="#3A3A3A"
+          value={username}
+          onChangeText={setUsername}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+      </View>
 
-      {/* Generate Button */}
-      <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t("generateQrCode")}</Text>
+      <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode} activeOpacity={0.85}>
+        <Text style={styles.buttonText}>{t("generate_qr")}</Text>
       </TouchableOpacity>
 
-      {/* QR Preview */}
       {qrValue && (
-        <View style={styles.qrSection}>
-          <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrLabel}>{t("scanToOpenTwitter")}</Text>
+        <View style={styles.qrWrapper}>
+          <View style={styles.qrCard}>
+            <QRCode value={qrValue} size={180} color="#0A0A0A" backgroundColor="#FFFFFF" />
+          </View>
+          <Text style={styles.qrText}>{t("scan_to_open_twitter")}</Text>
         </View>
       )}
     </QRCodeScreenLayout>
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({
   label: {
-    color: "#B3B3B3",
-    fontSize: 15,
+    color: "#6A6A6A",
+    fontSize: 12,
+    fontWeight: "600",
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
     marginBottom: 8,
   },
-  input: {
-    backgroundColor: "#1E1E1E",
+  inputRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#0A0A0A",
     borderWidth: 1,
-    borderColor: "#444",
-    borderRadius: 8,
-    padding: 12,
+    borderColor: "#2A2A2A",
+    borderRadius: 14,
+    marginBottom: 20,
+    paddingHorizontal: 14,
+  },
+  prefix: {
+    color: "#FDB623",
+    fontSize: 16,
+    fontWeight: "700",
+    marginRight: 4,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 14,
     color: "#FFFFFF",
     fontSize: 15,
-    marginBottom: 20,
   },
   button: {
-    width: "60%",
-    alignSelf: "center",
     backgroundColor: "#FDB623",
-    paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: 14,
+    paddingVertical: 14,
     alignItems: "center",
-    marginTop: 10,
+    shadowColor: "#FDB623",
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 6,
   },
   buttonText: {
-    color: "#1E1E1E",
-    fontWeight: "700",
-    fontSize: 16,
+    color: "#0A0A0A",
+    fontWeight: "800",
+    fontSize: 15,
+    letterSpacing: 0.3,
   },
-  qrSection: {
-    marginTop: 40,
+  qrWrapper: {
+    marginTop: 32,
     alignItems: "center",
   },
-  qrLabel: {
-    marginTop: 12,
-    color: "#FFFFFF",
-    fontSize: 16,
+  qrCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 16,
+    shadowColor: "#FDB623",
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 8,
+    marginBottom: 12,
   },
-};
+  qrText: {
+    color: "#5A5A5A",
+    fontSize: 13,
+    fontWeight: "500",
+  },
+});

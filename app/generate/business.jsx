@@ -30,7 +30,7 @@ export default function BusinessScreen() {
 
   const handleGenerateQRCode = () => {
     if (!companyName.trim()) {
-      Alert.alert(t("error"), t("enterCompanyNameAlert"));
+      Alert.alert(t("error"), t("company_name_required"));
       return;
     }
 
@@ -55,10 +55,10 @@ END:VCARD`;
       iconSource={require("../../assets/images/business.png")}
     >
       {/* Inputs */}
-      <Text style={styles.label}>{t("companyName")}</Text>
+      <Text style={styles.label}>{t("company_name")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterCompanyName")}
+        placeholder={t("enter_company_name")}
         placeholderTextColor="#999"
         value={companyName}
         onChangeText={setCompanyName}
@@ -67,7 +67,7 @@ END:VCARD`;
       <Text style={styles.label}>{t("industry")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterIndustry")}
+        placeholder={t("enter_industry")}
         placeholderTextColor="#999"
         value={industry}
         onChangeText={setIndustry}
@@ -76,7 +76,7 @@ END:VCARD`;
       <Text style={styles.label}>{t("phone")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterPhone")}
+        placeholder={t("enter_phone")}
         placeholderTextColor="#999"
         value={phone}
         onChangeText={setPhone}
@@ -86,7 +86,7 @@ END:VCARD`;
       <Text style={styles.label}>{t("email")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterEmail")}
+        placeholder={t("enter_email")}
         placeholderTextColor="#999"
         value={email}
         onChangeText={setEmail}
@@ -96,7 +96,7 @@ END:VCARD`;
       <Text style={styles.label}>{t("website")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterWebsite")}
+        placeholder={t("enter_website")}
         placeholderTextColor="#999"
         value={website}
         onChangeText={setWebsite}
@@ -105,7 +105,7 @@ END:VCARD`;
       <Text style={styles.label}>{t("address")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterAddress")}
+        placeholder={t("enter_address")}
         placeholderTextColor="#999"
         value={address}
         onChangeText={setAddress}
@@ -114,7 +114,7 @@ END:VCARD`;
       <Text style={styles.label}>{t("city")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterCity")}
+        placeholder={t("enter_city")}
         placeholderTextColor="#999"
         value={city}
         onChangeText={setCity}
@@ -123,20 +123,20 @@ END:VCARD`;
       <Text style={styles.label}>{t("country")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterCountry")}
+        placeholder={t("enter_country")}
         placeholderTextColor="#999"
         value={country}
         onChangeText={setCountry}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t("generateQrCode")}</Text>
+        <Text style={styles.buttonText}>{t("generate_qr")}</Text>
       </TouchableOpacity>
 
       {qrValue && (
         <View style={styles.qrWrapper}>
           <QRCode value={qrValue} size={200} color="#1E1E1E" backgroundColor="#FFF" />
-          <Text style={styles.qrText}>{t("scanToSaveContact")}</Text>
+          <Text style={styles.qrText}>{t("scan_to_save_contact")}</Text>
         </View>
       )}
     </QRCodeScreenLayout>

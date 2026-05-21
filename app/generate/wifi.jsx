@@ -16,7 +16,7 @@ export default function QRCodeWifi() {
 
   const handleGenerateQRCode = () => {
     if (!ssid.trim()) {
-      Alert.alert(t("error"), t("pleaseEnterValidSSID"));
+      Alert.alert(t("error"), t("ssid_required"));
       return;
     }
 
@@ -32,10 +32,10 @@ export default function QRCodeWifi() {
       iconSource={require("../../assets/images/wifi.png")}
     >
       {/* Network Name */}
-      <Text style={styles.label}>{t("networkName")}</Text>
+      <Text style={styles.label}>{t("network_name")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterNetworkName")}
+        placeholder={t("enter_network_name")}
         placeholderTextColor="#999"
         value={ssid}
         onChangeText={setSsid}
@@ -45,7 +45,7 @@ export default function QRCodeWifi() {
       <Text style={styles.label}>{t("password")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterPassword")}
+        placeholder={t("enter_password")}
         placeholderTextColor="#999"
         secureTextEntry
         value={password}
@@ -54,14 +54,14 @@ export default function QRCodeWifi() {
 
       {/* Generate Button */}
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t("generateQRCode")}</Text>
+        <Text style={styles.buttonText}>{t("generate_qr")}</Text>
       </TouchableOpacity>
 
       {/* QR Preview */}
       {qrValue && (
         <View style={styles.qrWrapper}>
           <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrText}>{t("scanToConnectWifi")}</Text>
+          <Text style={styles.qrText}>{t("scan_to_connect_wifi")}</Text>
         </View>
       )}
     </QRCodeScreenLayout>

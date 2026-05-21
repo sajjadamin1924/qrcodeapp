@@ -74,14 +74,14 @@ export default function QRDetails() {
   if (!item) {
     return (
       <View style={styles.center}>
-        <Text style={styles.errorText}>{t('noDataFound')}</Text>
+        <Text style={styles.errorText}>{t('no_data_found')}</Text>
       </View>
     );
   }
 
   return (
     <QRCodeScreenLayout
-      title={t('drawerQRDetails')}
+      title={t('nav_qr_details')}
       iconSource={require('../../assets/images/background.png')}
     >
       <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>

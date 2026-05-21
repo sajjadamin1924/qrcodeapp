@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import ArabicLanguageScreen from '../generate/ArabicLanguageScreen';
+import PrivacyPolicyScreen from '../generate/privacyPolicy';
 import QRCodeBusiness from '../generate/business';
 import QRCodeContact from '../generate/contact';
 import EmailScreen from '../generate/email';
@@ -61,6 +62,7 @@ const AppNavigator = () => {
         <Stack.Screen name="openFile" component={ResultScreen} />
         <Stack.Screen name="location" component={LocationScreen} />
         <Stack.Screen name="QRDetails" component={QRDetails} />
+        <Stack.Screen name="privacyPolicy" component={PrivacyPolicyScreen} />
 
       </Stack.Navigator>
    

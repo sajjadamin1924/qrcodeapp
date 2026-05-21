@@ -20,7 +20,7 @@ export default function LocationQRCodeScreen() {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert(t('permissionDenied'), t('locationPermissionAlert'));
+        Alert.alert(t('permission_denied'), t('location_permission_alert'));
         return;
       }
       const currentLocation = await Location.getCurrentPositionAsync({});
@@ -30,7 +30,7 @@ export default function LocationQRCodeScreen() {
 
   const handleGenerateQRCode = () => {
     if (!location) {
-      Alert.alert(t('errorTitle'), t("locationNotFound"));
+      Alert.alert(t('error_title'), t("location_not_found"));
       return;
     }
     const value = `geo:${location.latitude},${location.longitude}`;
@@ -44,21 +44,21 @@ export default function LocationQRCodeScreen() {
       title={t('location')}
       iconSource={require('../../assets/images/location.png')}
     >
-      <Text style={styles.label}>{t('currentLocation')}</Text>
+      <Text style={styles.label}>{t('current_location')}</Text>
       <Text style={styles.locationText}>
         {location
           ? `${t('latitude')}: ${location.latitude.toFixed(6)}\n${t('longitude')}: ${location.longitude.toFixed(6)}`
-          : t('fetchingLocation')}
+          : t('fetching_location')}
       </Text>
 
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t('generateQrCode')}</Text>
+        <Text style={styles.buttonText}>{t('generate_qr')}</Text>
       </TouchableOpacity>
 
       {qrValue && (
         <View style={styles.qrSection}>
           <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrLabel}>{t('scanThisQr')}</Text>
+          <Text style={styles.qrLabel}>{t('scan_this_qr')}</Text>
         </View>
       )}
     </QRCodeScreenLayout>

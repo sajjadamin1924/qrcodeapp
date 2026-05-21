@@ -1,210 +1,223 @@
-import { Ionicons } from '@expo/vector-icons';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { Ionicons } from "@expo/vector-icons";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-// Import your screens
-import HomeScreen from '@/components/HomeScreen';
-import QRCodeBusiness from '../generate/business';
-import QRCodeContact from '../generate/contact';
-import EmailScreen from '../generate/email';
-import QRCodeEvent from '../generate/event';
-import GenerateQrScreen from '../generate/Generate';
-import HistoryScreen from '../generate/history';
-import InstagramQRCodeScreen from '../generate/instagram';
-import LocationScreen from '../generate/location';
-import QRDetails from '../generate/QRDetails';
-import ScannerScreen from '../generate/scanner';
-import SettingsScreen from '../generate/settings';
-import TelephoneQRCodeScreen from '../generate/telephone';
-import TextQRCodeScreen from '../generate/text';
-import TwitterQRCodeScreen from '../generate/twitter';
-import QRCodeWebsite from '../generate/website';
-import WhatsAppQRCodeScreen from '../generate/whatsapp';
-import QRCodeWifi from '../generate/wifi';
-import ResultScreen from '../openFile';
-import ShowQRCodeScreen from '../showqr';
+import HomeScreen from "@/components/HomeScreen";
+import GenerateQrScreen from "../generate/Generate";
+import HistoryScreen from "../generate/history";
+import ScannerScreen from "../generate/scanner";
+import SettingsScreen from "../generate/settings";
 
 const Drawer = createDrawerNavigator();
+
+function DrawerHeader() {
+  return (
+    <View style={styles.drawerHeader}>
+      <View style={styles.logoWrap}>
+        <Ionicons name="qr-code" size={28} color="#FDB623" />
+      </View>
+      <View>
+        <Text style={styles.appName}>QR Maker</Text>
+        <Text style={styles.appTagline}>Create · Scan · Manage</Text>
+      </View>
+    </View>
+  );
+}
 
 export default function DrawerNavigator() {
   const { t } = useTranslation();
 
   return (
     <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} t={t} />}
       screenOptions={{
-        headerShown: true,
-        headerStyle: { backgroundColor: '#1E1E1E' },
-        headerTintColor: '#FFD700',
-        drawerStyle: { backgroundColor: '#1E1E1E', width: 240 },
-        drawerActiveTintColor: '#FFD700',
-        drawerInactiveTintColor: '#ccc',
+        headerShown: false,
+        drawerStyle: styles.drawer,
+        drawerActiveTintColor: "#FDB623",
+        drawerInactiveTintColor: "#6A6A6A",
+        drawerActiveBackgroundColor: "rgba(253,182,35,0.1)",
+        drawerItemStyle: styles.drawerItem,
+        drawerLabelStyle: styles.drawerLabel,
       }}
     >
-      {/* Main Screens */}
       <Drawer.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: t('drawerHome'),
-          drawerIcon: ({ color, size }) => <Ionicons name="home-outline" color={color} size={size} />,
+          title: t("nav_home"),
+          drawerIcon: ({ color }) => <Ionicons name="home-outline" size={20} color={color} />,
         }}
       />
       <Drawer.Screen
         name="Generate"
         component={GenerateQrScreen}
         options={{
-          title: t('drawerGenerate'),
-          drawerIcon: ({ color, size }) => <Ionicons name="qr-code-outline" color={color} size={size} />,
+          title: t("nav_generate"),
+          drawerIcon: ({ color }) => <Ionicons name="qr-code-outline" size={20} color={color} />,
         }}
       />
       <Drawer.Screen
         name="Scanner"
         component={ScannerScreen}
         options={{
-          title: t('drawerScanner'),
-          drawerIcon: ({ color, size }) => <Ionicons name="scan-outline" color={color} size={size} />,
+          title: t("nav_scanner"),
+          drawerIcon: ({ color }) => <Ionicons name="scan-outline" size={20} color={color} />,
         }}
       />
       <Drawer.Screen
         name="history"
         component={HistoryScreen}
         options={{
-          title: t('drawerHistory'),
-          
-          drawerIcon: ({ color, size }) => <Ionicons name="time-outline" color={color} size={size} />,
+          title: t("nav_history"),
+          drawerIcon: ({ color }) => <Ionicons name="time-outline" size={20} color={color} />,
         }}
       />
       <Drawer.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
-          title: t('drawerSettings'),
-          drawerIcon: ({ color, size }) => <Ionicons name="settings-outline" color={color} size={size} />,
-        }}
-      />
-
-      {/* Additional QR Screens */}
-      <Drawer.Screen
-        name="Business"
-        component={QRCodeBusiness}
-        options={{
-          title: t('drawerBusiness'),
-          drawerIcon: ({ color, size }) => <Ionicons name="briefcase-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="Contact"
-        component={QRCodeContact}
-        options={{
-          title: t('drawerContact'),
-          drawerIcon: ({ color, size }) => <Ionicons name="person-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="Email"
-        component={EmailScreen}
-        options={{
-          title: t('drawerEmail'),
-          drawerIcon: ({ color, size }) => <Ionicons name="mail-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="Event"
-        component={QRCodeEvent}
-        options={{
-          title: t('drawerEvent'),
-          drawerIcon: ({ color, size }) => <Ionicons name="calendar-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="Instagram"
-        component={InstagramQRCodeScreen}
-        options={{
-          title: t('drawerInstagram'),
-          drawerIcon: ({ color, size }) => <Ionicons name="logo-instagram" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="Telephone"
-        component={TelephoneQRCodeScreen}
-        options={{
-          title: t('drawerTelephone'),
-          drawerIcon: ({ color, size }) => <Ionicons name="call-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="Text"
-        component={TextQRCodeScreen}
-        options={{
-          title: t('drawerText'),
-          drawerIcon: ({ color, size }) => <Ionicons name="text-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="Twitter"
-        component={TwitterQRCodeScreen}
-        options={{
-          title: t('drawerTwitter'),
-          drawerIcon: ({ color, size }) => <Ionicons name="logo-twitter" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="Website"
-        component={QRCodeWebsite}
-        options={{
-          title: t('drawerWebsite'),
-          drawerIcon: ({ color, size }) => <Ionicons name="globe-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="WhatsApp"
-        component={WhatsAppQRCodeScreen}
-        options={{
-          title: t('drawerWhatsApp'),
-          drawerIcon: ({ color, size }) => <Ionicons name="logo-whatsapp" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="WiFi"
-        component={QRCodeWifi}
-        options={{
-          title: t('drawerWiFi'),
-          drawerIcon: ({ color, size }) => <Ionicons name="wifi-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="ShowQR"
-        component={ShowQRCodeScreen}
-        options={{
-          title: t('drawerShowQR'),
-          drawerIcon: ({ color, size }) => <Ionicons name="eye-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="OpenFile"
-        component={ResultScreen}
-        options={{
-          title: t('drawerOpenFile'),
-          drawerIcon: ({ color, size }) => <Ionicons name="document-outline" color={color} size={size} />,
-        }}
-      />
-      <Drawer.Screen
-        name="Location"
-        component={LocationScreen}
-        options={{
-          title: t('drawerLocation'),
-          drawerIcon: ({ color, size }) => <Ionicons name="location-outline" color={color} size={size} />,
-        }}
-      />
-       <Drawer.Screen
-        name="QRDetails"
-        component={QRDetails}
-        options={{
-          title: t('drawerQRDetails'),
-          drawerIcon: ({ color, size }) => <Ionicons name="desktop-outline" color={color} size={size} />,
+          title: t("nav_settings"),
+          drawerIcon: ({ color }) => <Ionicons name="settings-outline" size={20} color={color} />,
         }}
       />
     </Drawer.Navigator>
   );
 }
+
+function CustomDrawerContent({ state, descriptors, navigation, t }) {
+  return (
+    <SafeAreaView style={styles.drawerContent}>
+      <DrawerHeader />
+
+      <View style={styles.divider} />
+
+      <View style={styles.navItems}>
+        {state.routes.map((route, index) => {
+          const { options } = descriptors[route.key];
+          const label = options.title ?? route.name;
+          const isFocused = state.index === index;
+          const icon = options.drawerIcon;
+
+          return (
+            <TouchableOpacity
+              key={route.key}
+              style={[styles.navItem, isFocused && styles.navItemActive]}
+              onPress={() => navigation.navigate(route.name)}
+              activeOpacity={0.75}
+            >
+              <View style={styles.navItemRow}>
+                {icon && icon({ color: isFocused ? "#FDB623" : "#6A6A6A", size: 20 })}
+                <Text style={[styles.navLabel, isFocused && styles.navLabelActive]}>
+                  {label}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+
+      <View style={styles.drawerFooter}>
+        <Text style={styles.footerText}>QR Maker v1.0.0</Text>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  drawer: {
+    backgroundColor: "#0D0D0D",
+    width: 260,
+    borderRightWidth: 1,
+    borderRightColor: "#1A1A1A",
+  },
+  drawerContent: {
+    flex: 1,
+    backgroundColor: "#0D0D0D",
+  },
+  drawerHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 20,
+    gap: 12,
+  },
+  logoWrap: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    backgroundColor: "rgba(253,182,35,0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(253,182,35,0.25)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  appName: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "800",
+    letterSpacing: 0.3,
+  },
+  appTagline: {
+    color: "#4A4A4A",
+    fontSize: 11,
+    marginTop: 1,
+    letterSpacing: 0.5,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#1A1A1A",
+    marginHorizontal: 20,
+    marginBottom: 12,
+  },
+  navItems: {
+    flex: 1,
+    paddingHorizontal: 12,
+  },
+  navItem: {
+    borderRadius: 12,
+    marginBottom: 4,
+    overflow: "hidden",
+  },
+  navItemActive: {
+    backgroundColor: "rgba(253,182,35,0.1)",
+  },
+  navItemRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    gap: 12,
+  },
+  navLabel: {
+    color: "#6A6A6A",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  navLabelActive: {
+    color: "#FDB623",
+  },
+  drawerItem: {
+    borderRadius: 12,
+    marginHorizontal: 0,
+    marginVertical: 2,
+  },
+  drawerLabel: {
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  drawerFooter: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#1A1A1A",
+  },
+  footerText: {
+    color: "#2A2A2A",
+    fontSize: 12,
+  },
+});

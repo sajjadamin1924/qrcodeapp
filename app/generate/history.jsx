@@ -1,21 +1,24 @@
-import BottomNavigation from '@/components/BottomNavigation';
-import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import FullScreenResultLayout from '../../components/FullScreenLayout';
+import BottomNavigation from "@/components/BottomNavigation";
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+const typeIcon = (type) => (type === "scan" ? "scan-outline" : "qr-code-outline");
+const typeColor = (type) => (type === "scan" ? "#FDB623" : "#34C759");
 
 export default function HistoryScreen() {
-  const [selectedTab, setSelectedTab] = useState('scan');
+  const [selectedTab, setSelectedTab] = useState("scan");
   const [history, setHistory] = useState([]);
   const navigation = useNavigation();
   const { t } = useTranslation();
 
   useEffect(() => {
     const loadHistory = async () => {
-      const saved = await AsyncStorage.getItem('qrHistory');
+      const saved = await AsyncStorage.getItem("qrHistory");
       if (saved) setHistory(JSON.parse(saved));
     };
     loadHistory();
@@ -23,7 +26,7 @@ export default function HistoryScreen() {
 
   const saveHistory = async (newHistory) => {
     setHistory(newHistory);
-    await AsyncStorage.setItem('qrHistory', JSON.stringify(newHistory));
+    await AsyncStorage.setItem("qrHistory", JSON.stringify(newHistory));
   };
 
   const deleteItem = (id) => {
@@ -31,118 +34,230 @@ export default function HistoryScreen() {
     saveHistory(updated);
   };
 
-  return (
-    <FullScreenResultLayout>
-      {/* Header */}
-      {/* <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back" size={26} color="#FFD700" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>{t('History')}</Text>
-      </View> */}
+  const filtered = history.filter((item) => item.type === selectedTab);
 
-      {/* Tabs */}
-      <View style={styles.tabs}>
-        <TouchableOpacity
-          style={[styles.tabButton, selectedTab === 'scan' && styles.tabButtonActive]}
-          onPress={() => setSelectedTab('scan')}
-        >
-          <Text style={selectedTab === 'scan' ? styles.tabTextActive : styles.tabText}>{t('Scan')}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tabButton, selectedTab === 'create' && styles.tabButtonActive]}
-          onPress={() => setSelectedTab('create')}
-        >
-          <Text style={selectedTab === 'create' ? styles.tabTextActive : styles.tabText}>{t('Create')}</Text>
-        </TouchableOpacity>
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.headerSub}>QR MAKER</Text>
+          <Text style={styles.title}>{t("history")}</Text>
+        </View>
+        <View style={styles.countBadge}>
+          <Text style={styles.countText}>{filtered.length}</Text>
+        </View>
       </View>
 
-      {/* History List */}
-      <FlatList
-        data={history.filter((item) => item.type === selectedTab)}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.listItem}
-            onPress={() => navigation.navigate('QRDetails', { item })}
-            activeOpacity={0.7}
-          >
-            <Image source={require('../../assets/images/qricon.png')} style={styles.qrIcon} />
-            <View style={styles.listText}>
-              <Text style={styles.url} numberOfLines={1}>{item.url}</Text>
-              <Text style={styles.type}>{item.type.toUpperCase()}</Text>
-            </View>
-            <View style={styles.listRight}>
-              <Text style={styles.date}>{item.date}</Text>
-              <TouchableOpacity onPress={() => deleteItem(item.id)}>
-                <Ionicons name="trash" size={20} color="#FFD700" />
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+      {/* Tabs */}
+      <View style={styles.tabsWrap}>
+        <View style={styles.tabs}>
+          {["scan", "create"].map((tab) => (
+            <TouchableOpacity
+              key={tab}
+              style={[styles.tab, selectedTab === tab && styles.tabActive]}
+              onPress={() => setSelectedTab(tab)}
+              activeOpacity={0.75}
+            >
+              <Ionicons
+                name={typeIcon(tab)}
+                size={15}
+                color={selectedTab === tab ? "#0A0A0A" : "#6A6A6A"}
+                style={{ marginRight: 5 }}
+              />
+              <Text style={[styles.tabText, selectedTab === tab && styles.tabTextActive]}>
+                {t(tab === "scan" ? "scan_tab" : "create_tab")}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
 
-      {/* Footer */}
+      {/* List */}
+      {filtered.length === 0 ? (
+        <View style={styles.empty}>
+          <View style={styles.emptyIcon}>
+            <Ionicons name={typeIcon(selectedTab)} size={36} color="#3A3A3A" />
+          </View>
+          <Text style={styles.emptyTitle}>
+            {t(selectedTab === "scan" ? "no_scan_history" : "no_create_history")}
+          </Text>
+          <Text style={styles.emptySubtitle}>
+            {t(selectedTab === "scan" ? "scan_history_hint" : "create_history_hint")}
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={filtered}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.listItem}
+              onPress={() => navigation.navigate("QRDetails", { item })}
+              activeOpacity={0.75}
+            >
+              <View style={[styles.itemIcon, { backgroundColor: `${typeColor(item.type)}15` }]}>
+                <Ionicons name={typeIcon(item.type)} size={20} color={typeColor(item.type)} />
+              </View>
+              <View style={styles.itemText}>
+                <Text style={styles.itemUrl} numberOfLines={1}>{item.url}</Text>
+                <Text style={styles.itemDate}>{item.date}</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.deleteBtn}
+                onPress={() => deleteItem(item.id)}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <Ionicons name="trash-outline" size={16} color="#3A3A3A" />
+              </TouchableOpacity>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+
       <BottomNavigation />
-    </FullScreenResultLayout>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  backButton: {
-    backgroundColor: '#2a2a2a',
-    padding: 8,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#fff',
+  container: {
     flex: 1,
-    textAlign: 'center',
+    backgroundColor: "#0A0A0A",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 14,
+  },
+  headerSub: {
+    color: "#FDB623",
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 2,
+    marginBottom: 2,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: "800",
+    color: "#FFFFFF",
+  },
+  countBadge: {
+    backgroundColor: "rgba(253,182,35,0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(253,182,35,0.25)",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+  },
+  countText: {
+    color: "#FDB623",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  tabsWrap: {
+    paddingHorizontal: 20,
+    marginBottom: 16,
   },
   tabs: {
-    flexDirection: 'row',
-    backgroundColor: '#2a2a2a',
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginBottom: 20,
+    flexDirection: "row",
+    backgroundColor: "#141414",
+    borderRadius: 14,
+    padding: 4,
+    borderWidth: 1,
+    borderColor: "#222222",
   },
-  tabButton: {
+  tab: {
     flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 10,
-    alignItems: 'center',
-    backgroundColor: '#2a2a2a',
+    borderRadius: 10,
   },
-  tabButtonActive: { backgroundColor: '#FFD700' },
-  tabText: { color: '#fff', fontSize: 16 },
-  tabTextActive: { color: '#000', fontWeight: '600', fontSize: 16 },
+  tabActive: {
+    backgroundColor: "#FDB623",
+  },
+  tabText: {
+    color: "#6A6A6A",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  tabTextActive: {
+    color: "#0A0A0A",
+    fontWeight: "700",
+  },
+  empty: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 80,
+  },
+  emptyIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 24,
+    backgroundColor: "#141414",
+    borderWidth: 1,
+    borderColor: "#222222",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  emptyTitle: {
+    color: "#4A4A4A",
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 6,
+  },
+  emptySubtitle: {
+    color: "#3A3A3A",
+    fontSize: 13,
+  },
   list: {
-    paddingBottom: 100,
     paddingHorizontal: 20,
+    paddingBottom: 100,
   },
   listItem: {
-    flexDirection: 'row',
-    backgroundColor: '#2a2a2a',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 15,
-    borderLeftWidth: 3,
-    borderLeftColor: '#FFD700',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#141414",
+    borderRadius: 16,
+    padding: 14,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#1E1E1E",
   },
-  qrIcon: { width: 40, height: 40, marginRight: 15 },
-  listText: { flex: 1 },
-  url: { color: '#fff', fontSize: 16, fontWeight: '500' },
-  type: { color: '#aaa', fontSize: 12 },
-  listRight: { alignItems: 'flex-end' },
-  date: { color: '#aaa', fontSize: 12, marginBottom: 5 },
+  itemIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+  itemText: { flex: 1 },
+  itemUrl: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "600",
+    marginBottom: 3,
+  },
+  itemDate: {
+    color: "#4A4A4A",
+    fontSize: 11,
+  },
+  deleteBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: "#1E1E1E",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

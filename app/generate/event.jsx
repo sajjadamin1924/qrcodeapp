@@ -32,7 +32,7 @@ export default function QRCodeEvent() {
 
   const handleGenerateQRCode = () => {
     if (!form.name.trim() || !form.start.trim() || !form.end.trim()) {
-      Alert.alert(t('Error'), t('Please enter event name and start/end dates'));
+      Alert.alert(t('error'), t('event_dates_required'));
       return;
     }
 
@@ -55,30 +55,30 @@ END:VEVENT`;
       iconSource={require('../../assets/images/event.png')}
     >
       {/* Event Name */}
-      <Text style={styles.label}>{t('eventName')}</Text>
+      <Text style={styles.label}>{t('event_name')}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t('enterEventName')}
+        placeholder={t('enter_event_name')}
         placeholderTextColor="#999"
         value={form.name}
         onChangeText={(v) => handleChange('name', v)}
       />
 
       {/* Start Date */}
-      <Text style={styles.label}>{t('startDateTime')}</Text>
+      <Text style={styles.label}>{t('start_date_time')}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t('enterStartDateTime')}
+        placeholder={t('enter_start_date_time')}
         placeholderTextColor="#999"
         value={form.start}
         onChangeText={(v) => handleChange('start', v)}
       />
 
       {/* End Date */}
-      <Text style={styles.label}>{t('endDateTime')}</Text>
+      <Text style={styles.label}>{t('end_date_time')}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t('enterEndDateTime')}
+        placeholder={t('enter_end_date_time')}
         placeholderTextColor="#999"
         value={form.end}
         onChangeText={(v) => handleChange('end', v)}
@@ -88,7 +88,7 @@ END:VEVENT`;
       <Text style={styles.label}>{t('location')}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t('enterLocation')}
+        placeholder={t('enter_location')}
         placeholderTextColor="#999"
         value={form.location}
         onChangeText={(v) => handleChange('location', v)}
@@ -98,7 +98,7 @@ END:VEVENT`;
       <Text style={styles.label}>{t('description')}</Text>
       <TextInput
         style={[styles.input, { height: 80, textAlignVertical: 'top' }]}
-        placeholder={t('enterDescription')}
+        placeholder={t('enter_description')}
         placeholderTextColor="#999"
         value={form.description}
         multiline
@@ -107,14 +107,14 @@ END:VEVENT`;
 
       {/* Generate Button */}
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t('generateQrCode')}</Text>
+        <Text style={styles.buttonText}>{t('generate_qr')}</Text>
       </TouchableOpacity>
 
       {/* QR Code Preview */}
       {qrValue && (
         <View style={styles.qrSection}>
           <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrLabel}>{t('scanToAddEvent')}</Text>
+          <Text style={styles.qrLabel}>{t('scan_to_add_event')}</Text>
         </View>
       )}
     </QRCodeScreenLayout>

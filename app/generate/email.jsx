@@ -22,7 +22,7 @@ export default function EmailScreen() {
 
   const handleGenerateQRCode = () => {
     if (!email.trim()) {
-      Alert.alert(t('Error'), t('Please enter a valid email'));
+      Alert.alert(t('error'), t('valid_email_required'));
       return;
     }
     const value = email.trim();
@@ -40,7 +40,7 @@ export default function EmailScreen() {
       <Text style={styles.label}>{t('email')}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t('enterEmail')}
+        placeholder={t('enter_email')}
         placeholderTextColor="#999"
         value={email}
         onChangeText={setEmail}
@@ -49,14 +49,14 @@ export default function EmailScreen() {
 
       {/* Generate Button */}
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t('generateQrCode')}</Text>
+        <Text style={styles.buttonText}>{t('generate_qr')}</Text>
       </TouchableOpacity>
 
       {/* QR Preview */}
       {qrValue && (
         <View style={styles.qrSection}>
           <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrLabel}>{t('scanThisQr')}</Text>
+          <Text style={styles.qrLabel}>{t('scan_this_qr')}</Text>
         </View>
       )}
     </QRCodeScreenLayout>

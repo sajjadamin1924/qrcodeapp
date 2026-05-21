@@ -37,7 +37,7 @@ export default function ArabicLanguageScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{t("selectArabicVariant")}</Text>
+      <Text style={styles.title}>{t("select_arabic_variant")}</Text>
 
       <FlatList
         data={arabicVariants}

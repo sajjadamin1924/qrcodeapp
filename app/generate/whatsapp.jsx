@@ -15,7 +15,7 @@ export default function WhatsAppQRCodeScreen() {
 
   const handleGenerateQRCode = () => {
     if (!number.trim()) {
-      Alert.alert(t("error"), t("enterWhatsAppAlert"));
+      Alert.alert(t("error"), t("whatsapp_number_required"));
       return;
     }
 
@@ -31,10 +31,10 @@ export default function WhatsAppQRCodeScreen() {
       iconSource={require("../../assets/images/whatsapp.png")}
     >
       {/* Input Field */}
-      <Text style={styles.label}>{t("whatsappNumber")}</Text>
+      <Text style={styles.label}>{t("whatsapp_number")}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t("enterWhatsAppPlaceholder")}
+        placeholder={t("enter_whatsapp_number")}
         placeholderTextColor="#999"
         keyboardType="phone-pad"
         value={number}
@@ -43,14 +43,14 @@ export default function WhatsAppQRCodeScreen() {
 
       {/* Generate Button */}
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t("generateQRCode")}</Text>
+        <Text style={styles.buttonText}>{t("generate_qr")}</Text>
       </TouchableOpacity>
 
       {/* QR Preview */}
       {qrValue && (
         <View style={styles.qrWrapper}>
           <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrText}>{t("scanToOpenWhatsApp")}</Text>
+          <Text style={styles.qrText}>{t("scan_to_open_whatsapp")}</Text>
         </View>
       )}
     </QRCodeScreenLayout>

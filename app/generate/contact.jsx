@@ -38,7 +38,7 @@ export default function QRCodeContact() {
 
   const handleGenerateQRCode = () => {
     if (!form.firstName.trim() || !form.lastName.trim()) {
-      Alert.alert(t("pleaseEnterFirstAndLastName"));
+      Alert.alert(t("full_name_required"));
       return;
     }
 
@@ -68,20 +68,20 @@ END:VCARD`;
       <View style={{ marginBottom: 20 }}>
         <View style={styles.row}>
           <View style={styles.halfInput}>
-            <Text style={styles.label}>{t("firstName")}</Text>
+            <Text style={styles.label}>{t("first_name")}</Text>
             <TextInput
               style={styles.input}
-              placeholder={t("enterFirstName")}
+              placeholder={t("enter_first_name")}
               placeholderTextColor="#999"
               value={form.firstName}
               onChangeText={(v) => handleChange("firstName", v)}
             />
           </View>
           <View style={styles.halfInput}>
-            <Text style={styles.label}>{t("lastName")}</Text>
+            <Text style={styles.label}>{t("last_name")}</Text>
             <TextInput
               style={styles.input}
-              placeholder={t("enterLastName")}
+              placeholder={t("enter_last_name")}
               placeholderTextColor="#999"
               value={form.lastName}
               onChangeText={(v) => handleChange("lastName", v)}
@@ -94,7 +94,7 @@ END:VCARD`;
             <Text style={styles.label}>{t("company")}</Text>
             <TextInput
               style={styles.input}
-              placeholder={t("enterCompany")}
+              placeholder={t("enter_company")}
               placeholderTextColor="#999"
               value={form.company}
               onChangeText={(v) => handleChange("company", v)}
@@ -104,7 +104,7 @@ END:VCARD`;
             <Text style={styles.label}>{t("job")}</Text>
             <TextInput
               style={styles.input}
-              placeholder={t("enterJob")}
+              placeholder={t("enter_job")}
               placeholderTextColor="#999"
               value={form.job}
               onChangeText={(v) => handleChange("job", v)}
@@ -117,7 +117,7 @@ END:VCARD`;
             <Text style={styles.label}>{t("phone")}</Text>
             <TextInput
               style={styles.input}
-              placeholder={t("enterPhone")}
+              placeholder={t("enter_phone")}
               placeholderTextColor="#999"
               keyboardType="phone-pad"
               value={form.phone}
@@ -128,7 +128,7 @@ END:VCARD`;
             <Text style={styles.label}>{t("email")}</Text>
             <TextInput
               style={styles.input}
-              placeholder={t("enterEmail")}
+              placeholder={t("enter_email")}
               placeholderTextColor="#999"
               keyboardType="email-address"
               value={form.email}
@@ -140,7 +140,7 @@ END:VCARD`;
         <Text style={styles.label}>{t("website")}</Text>
         <TextInput
           style={styles.input}
-          placeholder={t("enterWebsite")}
+          placeholder={t("enter_website")}
           placeholderTextColor="#999"
           value={form.website}
           onChangeText={(v) => handleChange("website", v)}
@@ -149,7 +149,7 @@ END:VCARD`;
         <Text style={styles.label}>{t("address")}</Text>
         <TextInput
           style={styles.input}
-          placeholder={t("enterAddress")}
+          placeholder={t("enter_address")}
           placeholderTextColor="#999"
           value={form.address}
           onChangeText={(v) => handleChange("address", v)}
@@ -160,7 +160,7 @@ END:VCARD`;
             <Text style={styles.label}>{t("city")}</Text>
             <TextInput
               style={styles.input}
-              placeholder={t("enterCity")}
+              placeholder={t("enter_city")}
               placeholderTextColor="#999"
               value={form.city}
               onChangeText={(v) => handleChange("city", v)}
@@ -170,7 +170,7 @@ END:VCARD`;
             <Text style={styles.label}>{t("country")}</Text>
             <TextInput
               style={styles.input}
-              placeholder={t("enterCountry")}
+              placeholder={t("enter_country")}
               placeholderTextColor="#999"
               value={form.country}
               onChangeText={(v) => handleChange("country", v)}
@@ -181,14 +181,14 @@ END:VCARD`;
 
       {/* Generate Button */}
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t("generateQrCode")}</Text>
+        <Text style={styles.buttonText}>{t("generate_qr")}</Text>
       </TouchableOpacity>
 
       {/* QR Display */}
       {qrValue && (
         <View style={styles.qrWrapper}>
           <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrText}>{t("scanToSaveContact")}</Text>
+          <Text style={styles.qrText}>{t("scan_to_save_contact")}</Text>
         </View>
       )}
     </QRCodeScreenLayout>

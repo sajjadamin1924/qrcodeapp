@@ -16,7 +16,7 @@ export default function InstagramScreen() {
 
   const handleGenerateQRCode = () => {
     if (!username.trim()) {
-      Alert.alert(t('Error'), t('Please enter a valid Instagram username'));
+      Alert.alert(t('error'), t('instagram_username_required'));
       return;
     }
 
@@ -34,20 +34,20 @@ export default function InstagramScreen() {
       <Text style={styles.label}>{t('username')}</Text>
       <TextInput
         style={styles.input}
-        placeholder={t('enterInstagramUsername')}
+        placeholder={t('enter_instagram_username')}
         placeholderTextColor="#999"
         value={username}
         onChangeText={setUsername}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleGenerateQRCode}>
-        <Text style={styles.buttonText}>{t('generateQrCode')}</Text>
+        <Text style={styles.buttonText}>{t('generate_qr')}</Text>
       </TouchableOpacity>
 
       {qrValue && (
         <View style={styles.qrSection}>
           <QRCode value={qrValue} size={200} color="#000" backgroundColor="#fff" />
-          <Text style={styles.qrLabel}>{t('scanThisQr')}</Text>
+          <Text style={styles.qrLabel}>{t('scan_this_qr')}</Text>
         </View>
       )}
     </QRCodeScreenLayout>
